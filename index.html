@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WonderSparks News 🚀 | The Fun & Friendly News Explorer for Kids</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Animated Doodles (Clouds & Stars) -->
+  <div class="background-doodles" aria-hidden="true">
+    <svg class="doodle-cloud" style="top: 8%; left: 4%; width: 120px;" viewBox="0 0 100 60">
+      <path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q80,40 70,40 Z"/>
+    </svg>
+    <svg class="doodle-cloud" style="top: 18%; right: 6%; width: 140px;" viewBox="0 0 100 60">
+      <path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q80,40 70,40 Z"/>
+    </svg>
+    <svg class="doodle-cloud" style="top: 65%; left: 2%; width: 160px;" viewBox="0 0 100 60">
+      <path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q80,40 70,40 Z"/>
+    </svg>
+    
+    <!-- Twinkling stars for bedtime mode -->
+    <div class="doodle-star" style="top: 10%; left: 20%; font-size: 20px;">⭐</div>
+    <div class="doodle-star" style="top: 15%; right: 25%; font-size: 24px; animation-delay: 0.7s;">✨</div>
+    <div class="doodle-star" style="top: 40%; left: 8%; font-size: 18px; animation-delay: 1.4s;">🌟</div>
+    <div class="doodle-star" style="top: 55%; right: 12%; font-size: 22px; animation-delay: 0.3s;">⭐</div>
+    <div class="doodle-star" style="top: 80%; left: 30%; font-size: 20px; animation-delay: 1.8s;">✨</div>
+  </div>
+
+  <div class="app-container">
+
+    <!-- Top Site Header -->
+    <header class="site-header">
+      <div class="top-bar">
+        <a href="#" class="brand-wrapper" id="brandHomeBtn">
+          <div class="mascot-avatar" id="mascotBounce" title="Click to hear Barnaby say hi!">
+            🐻
+          </div>
+          <div class="brand-text">
+            <h1>WonderSparks <span>News</span></h1>
+            <div class="brand-tagline">Curious Stories & Big Discoveries for Smart Kids!</div>
+          </div>
+        </a>
+
+        <div class="top-controls">
+          <button class="control-btn" id="soundToggleBtn" title="Turn joyful sounds on or off">
+            <span id="soundIcon">🔊</span> Sound: <span id="soundLabel">ON</span>
+          </button>
+          
+          <button class="control-btn" id="bedtimeToggleBtn" title="Switch to starry bedtime reading theme">
+            <span>🌙</span> Bedtime Mode
+          </button>
+
+          <button class="control-btn" id="treasureChestBtn" title="View your saved starred stories">
+            <span>⭐</span> Treasure Chest <span class="chest-count" id="chestCount">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Age Group / Reading Level Selector -->
+      <div class="age-selector-container">
+        <div class="age-label-group">
+          <span class="age-label-icon">🎯</span>
+          <div>
+            <span class="age-label-text">Choose Your Reading Adventure:</span>
+          </div>
+        </div>
+
+        <div class="age-pill-group" role="group" aria-label="Reading Level Selector">
+          <button class="age-pill" data-level="little" title="Ages 6-8: Simple words, big pictures & audio stories">
+            🐣 Little Explorers (Ages 6–8)
+          </button>
+          <button class="age-pill active" data-level="curious" title="Ages 9-11: Exciting details & science facts">
+            🦊 Curious Kids (Ages 9–11)
+          </button>
+          <button class="age-pill" data-level="junior" title="Ages 12+: In-depth journalism & science terms">
+            🚀 Junior Reporters (Ages 12+)
+          </button>
+        </div>
+      </div>
+
+      <!-- Barnaby Mascot Bubble -->
+      <div class="mascot-banner">
+        <div class="mascot-speech">
+          <span class="mascot-speech-icon">🐻</span>
+          <span id="mascotMessageText">
+            Welcome to WonderSparks! I'm Barnaby the Reporter Bear. Click on any story to read or listen aloud!
+          </span>
+        </div>
+        <div class="mascot-actions">
+          <button class="mini-pill-btn" id="newMascotTipBtn">💡 Wonder Tip</button>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <nav class="categories-bar" aria-label="News Categories">
+        <button class="cat-tab active" data-cat="all">
+          <span>🌈</span> All Stories
+        </button>
+        <button class="cat-tab" data-cat="space">
+          <span>🚀</span> Space & Science
+        </button>
+        <button class="cat-tab" data-cat="animals">
+          <span>🐾</span> Animals & Nature
+        </button>
+        <button class="cat-tab" data-cat="tech">
+          <span>⚡</span> Inventions & Tech
+        </button>
+        <button class="cat-tab" data-cat="earth">
+          <span>🦖</span> Dino & History
+        </button>
+        <button class="cat-tab" data-cat="sports">
+          <span>🛹</span> Sports & Play
+        </button>
+        <button class="cat-tab" data-cat="wacky">
+          <span>🐸</span> Wacky & Fun
+        </button>
+      </nav>
+
+      <!-- Search & Quick Filters -->
+      <div class="search-filter-row">
+        <div class="search-box-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="newsSearchInput" class="search-input" placeholder="Search for pandas, spaceships, robots, dinos..." aria-label="Search stories">
+        </div>
+
+        <div class="filter-badge-row">
+          <button class="tag-toggle-btn" id="positiveOnlyBtn">
+            ✨ Good Vibes Only
+          </button>
+          <button class="tag-toggle-btn" id="quizAvailableBtn">
+            🧠 Quizzes Available
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="news-layout">
+      
+      <!-- Article Cards Column -->
+      <section class="articles-column">
+        <div class="articles-grid" id="articlesGrid">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Empty state if search finds nothing -->
+        <div id="noResultsState" style="display: none; text-align: center; padding: 60px 20px;">
+          <div style="font-size: 54px; margin-bottom: 12px;">🔭</div>
+          <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 8px;">No Stories Found Yet!</h3>
+          <p style="color: var(--text-muted); margin-bottom: 16px;">Try searching for something else like "space", "robot", or "panda".</p>
+          <button class="control-btn" id="clearSearchBtn">Show All Stories</button>
+        </div>
+      </section>
+
+      <!-- Sidebar Fun Zone -->
+      <aside class="sidebar-column">
+        
+        <!-- Daily Wonder Poll -->
+        <div class="side-widget" id="pollWidget">
+          <div class="widget-header">
+            <h3 class="widget-title"><span>📊</span> Kids' Daily Poll</h3>
+            <span style="font-size: 12px; font-weight: 700; color: #228be6;">Live Votes</span>
+          </div>
+          <p class="poll-question" id="pollQuestionText">Loading question...</p>
+          <div class="poll-options" id="pollOptionsContainer">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Daily Brain Teaser / Riddle -->
+        <div class="side-widget">
+          <div class="widget-header">
+            <h3 class="widget-title"><span>🧩</span> Brain Riddle of the Day</h3>
+          </div>
+          <div class="riddle-box" id="riddleQuestionText">
+            "I have rivers without water, forests without trees, and cities without people. What am I?"
+          </div>
+          <div class="riddle-hint" id="riddleHintText">
+            Hint: You might find me folded in a pirate's treasure chest!
+          </div>
+          <button class="riddle-reveal-btn" id="revealRiddleBtn">✨ Tap to Reveal Answer</button>
+          <div class="riddle-answer" id="riddleAnswerBox">
+            A Map! 🗺️
+          </div>
+        </div>
+
+        <!-- Word of the Day Spotlight -->
+        <div class="side-widget">
+          <div class="widget-header">
+            <h3 class="widget-title"><span>🔍</span> Superpower Word</h3>
+          </div>
+          <div style="background: var(--bg-secondary); border-radius: var(--border-radius-button); padding: 16px;">
+            <div style="font-size: 18px; font-weight: 800; color: #e67700; margin-bottom: 4px;">Exoplanet</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Pronounced: <em>EK-soh-plan-it</em></div>
+            <p style="font-size: 14px; line-height: 1.4;">
+              A mysterious planet that orbits a completely different star outside our own Solar System!
+            </p>
+          </div>
+        </div>
+
+        <!-- Submit Kid News / Questions -->
+        <div class="side-widget" style="background: linear-gradient(135deg, #e7f5ff 0%, #d0ebff 100%);">
+          <div class="widget-header">
+            <h3 class="widget-title" style="color: #1971c2;"><span>💌</span> Junior Reporter Club</h3>
+          </div>
+          <p style="font-size: 14px; color: #1864ab; margin-bottom: 14px; line-height: 1.4;">
+            Did something awesome happen at your school or hometown? Have a curious science question?
+          </p>
+          <button class="control-btn" id="submitNewsTipBtn" style="width: 100%; justify-content: center; background: #228be6; color: #fff;">
+            ✏️ Send a News Tip to Barnaby
+          </button>
+        </div>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- Full Article Reading Theater Modal -->
+  <div class="modal-backdrop" id="articleModalBackdrop" role="dialog" aria-modal="true">
+    <div class="article-modal" id="articleModal">
+      
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close article">✕</button>
+      
+      <div class="modal-header-hero" id="modalHero">
+        <!-- SVG hero populated dynamically -->
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Text-to-speech toolbar -->
+        <div class="audio-player-bar">
+          <div class="audio-controls-left">
+            <button class="audio-main-play-btn" id="modalSpeechPlayBtn">
+              <span id="speechPlayIcon">🔊</span>
+              <span id="speechPlayLabel">Read Story Aloud</span>
+            </button>
+          </div>
+          
+          <div class="audio-speed-group">
+            <span>Reading Speed:</span>
+            <button class="speed-btn" data-rate="0.8">🐢 Storyteller</button>
+            <button class="speed-btn active" data-rate="0.95">🐰 Normal</button>
+            <button class="speed-btn" data-rate="1.2">🚀 Speedy</button>
+          </div>
+        </div>
+
+        <div class="modal-meta-row">
+          <span class="modal-category-badge" id="modalCategoryBadge">🚀 Space & Science</span>
+          <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);" id="modalReadTime">3 min read</span>
+        </div>
+
+        <h2 class="modal-title" id="modalTitle">Article Title Goes Here</h2>
+
+        <div class="modal-age-notice" id="modalAgeNotice">
+          <span>🎯 Showing:</span>
+          <strong id="modalAgeCurrentName">Curious Kids Edition</strong>
+        </div>
+
+        <div class="modal-article-text" id="modalArticleText">
+          <!-- Article text with interactive word detective highlights -->
+        </div>
+
+        <!-- Did You Know Box -->
+        <div class="did-you-know-card" id="modalDidYouKnow">
+          <h4>💡 Did You Know?</h4>
+          <p id="modalDidYouKnowText">Fun fact will appear here.</p>
+        </div>
+
+        <!-- Word Detective Vocabulary Card -->
+        <div class="word-detective-section" id="modalWordDetectiveSection">
+          <h4>🔍 Word Detective Notebook</h4>
+          <div class="word-tags-grid" id="modalWordTagsGrid">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Interactive Article Quiz -->
+        <div class="modal-quiz-card" id="modalQuizSection">
+          <div class="quiz-title">
+            <span>🧠</span>
+            <span id="modalQuizQuestionText">Quick Quiz Question?</span>
+          </div>
+          <div class="quiz-options-list" id="modalQuizOptionsList">
+            <!-- Populated via JS -->
+          </div>
+          <div class="quiz-feedback" id="modalQuizFeedback"></div>
+        </div>
+
+        <!-- Reactions & Actions -->
+        <div class="reactions-bar">
+          <button class="reaction-btn" data-reaction="thumbsUp">
+            👍 <span class="reaction-count" id="countThumbsUp">0</span>
+          </button>
+          <button class="reaction-btn" data-reaction="heart">
+            ❤️ <span class="reaction-count" id="countHeart">0</span>
+          </button>
+          <button class="reaction-btn" data-reaction="wow">
+            😮 <span class="reaction-count" id="countWow">0</span>
+          </button>
+          <button class="reaction-btn" data-reaction="laugh">
+            😂 <span class="reaction-count" id="countLaugh">0</span>
+          </button>
+
+          <button class="print-sheet-btn" id="printArticleBtn" title="Print this article for bedtime reading or classroom activities!">
+            🖨️ Print Story Activity Sheet
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Confetti Canvas for Quiz Success -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Scripts -->
+  <script src="js/audioEffects.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/newsData.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
