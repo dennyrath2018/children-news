@@ -1,637 +1,665 @@
-// News stories and interactive learning database for WonderSparks News
+// News stories, explorer badges, and learning database for WonderSparks News
+// Updated with the latest real-world science, space, animal, tech, and sports discoveries!
+
+const EXPLORER_BADGES = [
+  { id: "space_cadet", name: "Space Cadet", emoji: "🚀", desc: "Explore a Space & Science story", requirement: "read_space" },
+  { id: "wildlife_scout", name: "Panda Pal", emoji: "🐾", desc: "Discover an Animal & Nature story", requirement: "read_animals" },
+  { id: "tech_titan", name: "Kid Inventor", emoji: "⚡", desc: "Learn about an Invention story", requirement: "read_tech" },
+  { id: "dino_digger", name: "Fossil Finder", emoji: "🦖", desc: "Unearth a Prehistoric Dino story", requirement: "read_earth" },
+  { id: "sports_champ", name: "Super Athlete", emoji: "🛹", desc: "Read an exciting Sports story", requirement: "read_sports" },
+  { id: "wacky_whiz", name: "Curious Explorer", emoji: "🐸", desc: "Read a Wacky & Fun mystery story", requirement: "read_wacky" },
+  { id: "quiz_whiz", name: "Quiz Master", emoji: "🧠", desc: "Score 100% on any story mini-quiz", requirement: "quiz_win" },
+  { id: "poll_voter", name: "Voice of Wonder", emoji: "🗳️", desc: "Cast your vote in the Daily Kids Poll", requirement: "poll_vote" },
+  { id: "night_owl", name: "Starlit Dreamer", emoji: "🌙", desc: "Explore in Bedtime Starry Mode", requirement: "bedtime_read" },
+  { id: "word_detective", name: "Super Sleuth", emoji: "🔍", desc: "Inspect a Word Detective term", requirement: "word_click" }
+];
+
 const NEWS_ARTICLES = [
+  // 1. SPACE & SCIENCE - LATEST FEATURE
   {
-    id: "space-water-moon",
-    title: "Scientists Spot Mystery Water Caves on the Moon!",
-    slug: "moon-water-caves",
+    id: "space-mars-sunset-clouds",
+    title: "NASA Rover Captures Glowing Twilight Sunset Clouds on Mars!",
+    slug: "mars-sunset-clouds",
+    isFeatured: true,
+    difficulty: "explorer",
+    difficultyLabel: "⭐⭐ Explorer Tier",
     category: "space",
     categoryLabel: "Space & Science",
     categoryEmoji: "🚀",
-    bannerEmoji: "🌕",
-    gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    bannerEmoji: "🪐",
+    gradient: "linear-gradient(135deg, #f0932b 0%, #eb4d4b 50%, #2c2c54 100%)",
     readTime: "3 min read",
-    date: "Today's Feature",
+    audioTime: "1:40",
+    date: "Latest NASA Discovery",
     heroImage: `<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
       <defs>
-        <radialGradient id="spaceGrad" cx="50%" cy="30%" r="70%">
-          <stop offset="0%" stop-color="#1f2456" />
-          <stop offset="100%" stop-color="#0b0e27" />
-        </radialGradient>
-        <radialGradient id="moonGlow" cx="40%" cy="40%" r="60%">
-          <stop offset="0%" stop-color="#fff8db" />
-          <stop offset="70%" stop-color="#ffd56b" />
-          <stop offset="100%" stop-color="#e09c3d" />
+        <linearGradient id="marsSkyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#191970"/>
+          <stop offset="40%" stop-color="#472b62"/>
+          <stop offset="70%" stop-color="#c44569"/>
+          <stop offset="100%" stop-color="#f8a5c2"/>
+        </linearGradient>
+        <radialGradient id="marsSunGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="40%" stop-color="#fffa65"/>
+          <stop offset="100%" stop-color="#ff3838" stop-opacity="0"/>
         </radialGradient>
       </defs>
-      <rect width="600" height="320" fill="url(#spaceGrad)" rx="16"/>
-      <!-- Stars -->
-      <circle cx="80" cy="50" r="2.5" fill="#fff" opacity="0.8"/>
-      <circle cx="140" cy="90" r="1.5" fill="#ffd56b" opacity="0.9"/>
-      <circle cx="220" cy="40" r="2" fill="#fff" opacity="0.7"/>
-      <circle cx="340" cy="80" r="3" fill="#fff" opacity="0.9"/>
-      <circle cx="480" cy="60" r="2" fill="#8bf" opacity="0.9"/>
-      <circle cx="530" cy="110" r="2" fill="#fff" opacity="0.8"/>
-      <circle cx="90" cy="220" r="2" fill="#fff" opacity="0.7"/>
-      <!-- Moon -->
-      <circle cx="430" cy="130" r="85" fill="url(#moonGlow)"/>
-      <circle cx="395" cy="110" r="15" fill="#dba135" opacity="0.35"/>
-      <circle cx="455" cy="155" r="22" fill="#dba135" opacity="0.3"/>
-      <circle cx="440" cy="95" r="11" fill="#dba135" opacity="0.25"/>
-      <!-- Moon Cave Entrance -->
-      <ellipse cx="410" cy="140" rx="16" ry="24" fill="#382104" opacity="0.7"/>
-      <path d="M400,135 Q410,125 418,140 Q410,155 402,145 Z" fill="#6fe3ff" opacity="0.75"/>
-      <!-- Astronaut Rover -->
-      <rect x="130" y="220" width="120" height="50" rx="14" fill="#ffffff"/>
-      <rect x="145" y="200" width="70" height="24" rx="8" fill="#7ed6df"/>
-      <circle cx="150" cy="270" r="16" fill="#333" stroke="#ffd56b" stroke-width="4"/>
-      <circle cx="190" cy="270" r="16" fill="#333" stroke="#ffd56b" stroke-width="4"/>
-      <circle cx="230" cy="270" r="16" fill="#333" stroke="#ffd56b" stroke-width="4"/>
-      <!-- Little flag -->
-      <line x1="240" y1="220" x2="240" y2="175" stroke="#fff" stroke-width="3"/>
-      <polygon points="240,175 275,188 240,200" fill="#ff4757"/>
-      <!-- Cute Alien Peeking -->
-      <circle cx="300" cy="245" r="18" fill="#2ed573"/>
-      <circle cx="294" cy="242" r="3.5" fill="#111"/>
-      <circle cx="306" cy="242" r="3.5" fill="#111"/>
-      <line x1="300" y1="227" x2="300" y2="218" stroke="#2ed573" stroke-width="3"/>
-      <circle cx="300" cy="216" r="4" fill="#ff4757"/>
+      <rect width="600" height="320" fill="url(#marsSkyGrad)" rx="24"/>
+      <!-- Blue Martian Sunset Glow -->
+      <circle cx="340" cy="180" r="90" fill="url(#marsSunGlow)" opacity="0.8"/>
+      <circle cx="340" cy="180" r="16" fill="#7ed6df" opacity="0.9"/>
+      <!-- Iridescent Martian Twilight Clouds -->
+      <path d="M120,90 Q220,70 340,95 T520,80" stroke="#70a1ff" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.85"/>
+      <path d="M180,120 Q300,105 420,125 T560,110" stroke="#e056fd" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.75"/>
+      <path d="M80,140 Q200,125 320,145 T480,135" stroke="#7bed9f" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.7"/>
+      <!-- Red Mountains / Craters -->
+      <path d="M0,230 Q120,180 260,220 T520,200 L600,230 L600,320 L0,320 Z" fill="#b33939"/>
+      <path d="M-20,255 Q180,225 380,260 T620,240 L620,320 L-20,320 Z" fill="#cd6133"/>
+      <!-- Curiosity Rover -->
+      <g transform="translate(140, 210)">
+        <rect x="0" y="30" width="70" height="28" rx="8" fill="#f5f6fa"/>
+        <!-- Wheels -->
+        <circle cx="10" cy="64" r="10" fill="#2f3542"/>
+        <circle cx="35" cy="64" r="10" fill="#2f3542"/>
+        <circle cx="60" cy="64" r="10" fill="#2f3542"/>
+        <!-- Camera Mast -->
+        <line x1="20" y1="30" x2="20" y2="2" stroke="#dcdde1" stroke-width="4"/>
+        <rect x="12" y="-6" width="16" height="10" rx="3" fill="#2f3542"/>
+        <circle cx="20" cy="-1" r="3" fill="#00d2d3"/>
+        <!-- Solar sparkle -->
+        <text x="75" y="15" font-size="20">✨</text>
+      </g>
     </svg>`,
-    badge: "Space Expedition",
+    badge: "Cosmic Twilight",
     targetAges: ["little", "curious", "junior"],
     versions: {
       little: {
-        summary: "Space robots found cozy deep caves on the Moon! Inside, there might be super cold ice that future astronauts could drink!",
-        content: `Have you ever built a secret pillow fort in your living room? 
-        
-Astronomers believe astronauts might build real forts on the Moon inside secret caves!
+        summary: "NASA's Curiosity rover on Mars snapped pictures of glowing clouds in the Martian twilight! Because Mars is so cold, these clouds are made of dry ice and glow like rainbows when the Sun dips down.",
+        content: `Did you know that sunsets on Mars are blue? It is true! On Earth, our sunsets look red and orange, but on dusty Mars, the sky turns a mysterious twilight blue!
 
-A spacecraft flying around the Moon took special radar pictures and found giant underground tunnels. Deep down in these dark tunnels, temperatures stay nice and cool, protected from dangerous cosmic rays and burning hot sun rays.
+NASA's Curiosity rover looked up into the Martian evening sky and captured stunning photos of shimmering, pastel-colored clouds. 
 
-Even cooler? Scientists spotted frosty glimmers that might be frozen water! Future kids who travel to space could melt this ice for drinking water and even turn it into rocket fuel!`
+Mars is so freezing cold that these high-altitude clouds are not made of liquid water like Earth's clouds—they are made of frozen carbon dioxide, also known as dry ice crystals! As the Martian sun sank below the horizon, its last rays caught the crystals and made them glow like rainbow pearls.`
       },
       curious: {
-        summary: "Astronomers have mapped subterranean lava tubes on the Moon with radar. These deep pits could host future astronaut bases and protect them from extreme space weather!",
-        content: `Imagine living on the Moon. During lunar daytime, the surface bakes at an astonishing 120°C (250°F), hot enough to boil water! But at night, it plummets to -130°C (-200°F). How could humans ever build a base there?
+        summary: "NASA's Curiosity rover observed rare 'noctilucent' clouds on Mars. Formed at altitudes over 37 miles high from dry ice crystals, these clouds reveal secrets about atmospheric wave patterns on Mars.",
+        content: `Just after sunset on the dusty Red Planet, NASA's Curiosity rover turned its Mastcam toward the darkening sky. What it photographed looked like magical glowing ribbons drifting through space.
 
-The answer might lie underground! Scientists analyzing radar data from the Lunar Reconnaissance Orbiter discovered cavernous conduits called **lava tubes**. These tunnels were carved out billions of years ago when glowing volcanic rivers flowed on the lunar surface.
+These are known as **noctilucent clouds** (meaning 'night-shining' clouds). While most Martian clouds hover around 37 miles (60 km) up and consist of water ice, these twilight clouds formed much higher in the ultra-freezing upper atmosphere, where temperatures plunge below -130°C (-200°F).
 
-These natural subterranean caverns maintain a cozy, steady temperature around 17°C (63°F)—just like a comfortable spring afternoon on Earth! Even better, they act as natural radiation shields against harsh cosmic rays and falling space pebbles.
+At these extreme altitudes, carbon dioxide gas freezes directly into sparkling crystalline dry ice. Because they catch the sunlight from below the horizon, the clouds scatter light into iridescent pastel rainbows of pink, teal, and gold. 
 
-In the deepest shadows where sunlight never hits, scientists also detected signs of water ice deposits. That means future explorers could pump up water to drink, grow lunar veggies, and split into oxygen to breathe!`
+Scientists are using these images to map how Martian wind currents transport moisture and dust around the entire planet!`
       },
       junior: {
-        summary: "Radar sounding data confirms the existence of a cavernous conduit beneath the Mare Tranquillitatis pit on the Moon, offering an optimal site for radiation-shielded lunar habitats.",
-        content: `In a landmark study published in astrophysics, researchers utilizing miniature radio frequency radar data from NASA's Lunar Reconnaissance Orbiter (LRO) successfully confirmed an accessible subterranean cavity extending from the Mare Tranquillitatis pit.
+        summary: "Curiosity's high-resolution Mastcam imagery captured noctilucent cirrus-type clouds at mesospheric altitudes on Mars, providing novel empirical data on dry ice nucleation and atmospheric wave dynamics.",
+        content: `Observations conducted by NASA's Mars Science Laboratory (Curiosity) have documented extraordinary noctilucent cloud formations within the Martian mesosphere, exceeding altitudes of 60 kilometers.
 
-The cave is estimated to be at least 45 meters wide and up to 80 meters long, formed from ancient volcanic lava flows during the Moon's geologically active epoch. The structural integrity of these basaltic ceilings provides critical shielding against two lethal perils of lunar habitation: high-energy galactic cosmic radiation and micrometeoroid bombardment.
+Unlike terrestrial water-vapor clouds or lower-troposphere Martian water-ice hazes, these mesospheric clouds are composed of nucleated carbon dioxide (CO2) microcrystals. Planetary meteorologists determined that the temperature structure at these extreme altitudes drops below the condensation threshold of CO2.
 
-Crucially, thermal modeling indicates the subsurface temperature remains thermally stable at approximately 17°C, circumventing the extreme ±130°C surface temperature swings. Furthermore, proximity to permanently shadowed craters implies trapped volatile deposits—notably H2O ice—which can be harvested through in-situ resource utilization (ISRU) for life support and propellant synthesis.`
+The iridescent optical scattering—known as cloud iridescence or photometeors—is produced by diffraction when sunlight passes through uniformly sized ice crystals. Analyzing the phase and drift rate of these nocturnal cloud bands offers planetary scientists vital insight into the thermal structure, gravity waves, and volatile atmospheric cycles of modern Mars.`
       }
     },
-    didYouKnow: "A full day and night on the Moon lasts nearly 29.5 Earth days! That means almost two whole weeks of sunlight followed by two weeks of darkness.",
+    didYouKnow: "While sunsets on Earth look fiery orange and red, sunsets on Mars appear in glowing shades of pale blue and violet because fine Martian dust scatters red light away!",
     wordDetective: [
-      { word: "Lava Tube", pronunciation: "LAH-vuh toob", meaning: "A hollow tunnel left behind when underground molten rock drains away." },
-      { word: "Subterranean", pronunciation: "sub-tuh-RAY-nee-un", meaning: "Existing or happening completely underground!" },
-      { word: "Radiation", pronunciation: "ray-dee-AY-shun", meaning: "Invisible energy waves from the sun and stars that space suits protect us against." }
+      { word: "Noctilucent", pronunciation: "nok-tih-LOO-sent", meaning: "Shining or glowing brightly in the dark night sky after the sun has set." },
+      { word: "Dry Ice", pronunciation: "DRY ice", meaning: "Carbon dioxide gas frozen into a super-cold solid without melting into a liquid." },
+      { word: "Iridescence", pronunciation: "eer-ih-DESS-ens", meaning: "A glowing rainbow shimmer that changes colors when you look from different angles!" }
     ],
     quiz: {
-      question: "What temperature is it inside the deep Moon caves?",
-      options: ["Boiling hot like soup", "Around 17°C (63°F) - like a spring day!", "Freezing colder than Antarctica", "Hot enough to melt rocks"],
+      question: "What are the high twilight clouds on Mars primarily made of?",
+      options: ["Cotton candy", "Frozen carbon dioxide (dry ice)", "Liquid ocean spray", "Hot volcanic steam"],
       correctIndex: 1,
-      explanation: "Because the caves are deep underground, they stay at a comfortable 17°C (63°F), shielding astronauts from the burning heat and freezing cold above!"
+      explanation: "Because the high Martian atmosphere is unimaginably cold (below -130°C), carbon dioxide gas freezes directly into glittering dry ice crystals!"
     },
-    reactions: { thumbsUp: 42, heart: 89, wow: 114, laugh: 5 }
+    reactions: { thumbsUp: 88, heart: 142, wow: 165, laugh: 4 }
   },
+
+  // 2. ANIMALS & NATURE - LATEST DISCOVERY
   {
-    id: "animals-panda-twins",
-    title: "Twin Baby Red Pandas Take Their First Wobbly Tree Steps!",
-    slug: "twin-baby-red-pandas",
+    id: "animals-octopus-dreaming",
+    title: "Scientists Discover Octopuses Change Colors When Dreaming About Hunts!",
+    slug: "octopus-dreaming-colors",
+    isFeatured: false,
+    difficulty: "starter",
+    difficultyLabel: "⭐ Starter Tier",
     category: "animals",
     categoryLabel: "Animals & Nature",
     categoryEmoji: "🐾",
-    bannerEmoji: "🐼",
-    gradient: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)",
+    bannerEmoji: "🐙",
+    gradient: "linear-gradient(135deg, #10ac84 0%, #00d2d3 100%)",
     readTime: "2 min read",
-    date: "Trending Cute",
+    audioTime: "1:25",
+    date: "Marine Biology",
     heroImage: `<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
       <defs>
-        <linearGradient id="forestGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#bbf2c4"/>
-          <stop offset="100%" stop-color="#38ada9"/>
+        <linearGradient id="coralSeaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0984e3"/>
+          <stop offset="60%" stop-color="#00cec9"/>
+          <stop offset="100%" stop-color="#006266"/>
         </linearGradient>
       </defs>
-      <rect width="600" height="320" fill="url(#forestGrad)" rx="16"/>
-      <!-- Big Tree Branch -->
-      <path d="M-10,260 Q180,240 320,180 T610,160 L610,320 L-10,320 Z" fill="#795548"/>
-      <!-- Leaves -->
-      <circle cx="80" cy="180" r="45" fill="#2ed573" opacity="0.85"/>
-      <circle cx="130" cy="150" r="55" fill="#10ac84" opacity="0.9"/>
-      <circle cx="500" cy="110" r="60" fill="#2ed573" opacity="0.9"/>
-      <circle cx="560" cy="140" r="50" fill="#1dd1a1" opacity="0.8"/>
-      <!-- Baby Panda 1 -->
-      <g transform="translate(210, 115)">
-        <!-- Tail -->
-        <path d="M-10,40 Q-40,60 -60,40 Q-50,25 -20,28 Z" fill="#eb4d4b"/>
-        <line x1="-30" y1="38" x2="-25" y2="48" stroke="#f0932b" stroke-width="4"/>
-        <line x1="-45" y1="36" x2="-40" y2="44" stroke="#f0932b" stroke-width="4"/>
-        <!-- Body -->
-        <ellipse cx="25" cy="35" rx="32" ry="24" fill="#eb4d4b"/>
-        <!-- Ears -->
-        <polygon points="10,0 20,-18 30,-2" fill="#fff"/>
-        <polygon points="40,-2 50,-18 60,0" fill="#fff"/>
-        <!-- Head -->
-        <circle cx="35" cy="12" r="24" fill="#eb4d4b"/>
-        <ellipse cx="35" cy="18" rx="14" ry="10" fill="#fff"/>
-        <!-- Eyes & Nose -->
-        <circle cx="28" cy="12" r="3.5" fill="#222"/>
-        <circle cx="42" cy="12" r="3.5" fill="#222"/>
-        <polygon points="35,16 31,19 39,19" fill="#111"/>
-        <!-- Cute cheek blushes -->
-        <circle cx="22" cy="18" r="4" fill="#ff7979" opacity="0.6"/>
-        <circle cx="48" cy="18" r="4" fill="#ff7979" opacity="0.6"/>
-        <!-- Paws holding branch -->
-        <circle cx="18" cy="50" r="8" fill="#333"/>
-        <circle cx="45" cy="50" r="8" fill="#333"/>
-      </g>
-      <!-- Baby Panda 2 (peeking) -->
-      <g transform="translate(370, 95)">
-        <ellipse cx="20" cy="30" rx="26" ry="20" fill="#eb4d4b"/>
-        <polygon points="8,4 16,-12 24,2" fill="#fff"/>
-        <polygon points="32,2 40,-12 48,4" fill="#fff"/>
-        <circle cx="28" cy="14" r="20" fill="#eb4d4b"/>
-        <ellipse cx="28" cy="19" rx="12" ry="8" fill="#fff"/>
-        <circle cx="22" cy="14" r="3" fill="#222"/>
-        <circle cx="34" cy="14" r="3" fill="#222"/>
-        <polygon points="28,18 25,20 31,20" fill="#111"/>
-        <!-- Sparkling stars -->
-        <text x="55" y="10" font-size="20">✨</text>
+      <rect width="600" height="320" fill="url(#coralSeaGrad)" rx="24"/>
+      <!-- Bubbles -->
+      <circle cx="80" cy="180" r="10" fill="#fff" opacity="0.3"/>
+      <circle cx="110" cy="120" r="6" fill="#fff" opacity="0.4"/>
+      <circle cx="480" cy="140" r="14" fill="#fff" opacity="0.25"/>
+      <circle cx="510" cy="80" r="8" fill="#fff" opacity="0.35"/>
+      <!-- Sea Floor & Corals -->
+      <path d="M-10,270 Q140,250 280,270 T610,260 L610,320 L-10,320 Z" fill="#2d3436" opacity="0.4"/>
+      <path d="M500,320 L510,240 L530,220 L550,250 L560,320 Z" fill="#e84393" opacity="0.7"/>
+      <!-- Snoozing Octopus with color patterns -->
+      <g transform="translate(240, 100)">
+        <!-- Thought Dream Bubble -->
+        <circle cx="160" cy="-20" r="6" fill="#ffeaa7" opacity="0.8"/>
+        <circle cx="180" cy="-35" r="10" fill="#ffeaa7" opacity="0.9"/>
+        <ellipse cx="230" cy="-55" rx="55" ry="35" fill="#fff" opacity="0.95"/>
+        <text x="195" y="-48" font-size="28">🦀 😋</text>
+        <!-- Octopus Body (Half Purple, Half Gold - Dreaming!) -->
+        <path d="M40,60 Q80,10 120,60 Q130,110 80,120 Q30,110 40,60 Z" fill="#6c5ce7"/>
+        <path d="M80,15 Q120,60 120,95 Q100,115 80,120 Z" fill="#fdcb6e" opacity="0.85"/>
+        <!-- Closed Snoozing Eyes -->
+        <path d="M60,65 Q70,72 80,65" stroke="#2d3436" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M95,65 Q105,72 115,65" stroke="#2d3436" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <!-- Zzz -->
+        <text x="110" y="30" font-size="22" fill="#ffeaa7" font-weight="bold">Zzz...</text>
+        <!-- Wavy Tentacles -->
+        <path d="M40,110 Q10,130 5,160 Q20,180 50,150" stroke="#6c5ce7" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <path d="M65,115 Q50,150 40,175 Q60,195 80,165" stroke="#a29bfe" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <path d="M95,115 Q100,160 120,175 Q140,160 115,145" stroke="#fdcb6e" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <path d="M120,105 Q150,130 170,155 Q160,180 135,160" stroke="#f39c12" stroke-width="16" fill="none" stroke-linecap="round"/>
       </g>
     </svg>`,
-    badge: "Wildlife Wonder",
+    badge: "Ocean Dreams",
     targetAges: ["little", "curious", "junior"],
     versions: {
       little: {
-        summary: "Two adorable red panda cubs named Mochi and Peanut just stepped out of their cozy den for the very first time. They have fluffy striped tails and love munching sweet bamboo leaves!",
-        content: `Get ready for cuteness overload! 
+        summary: "Do sea creatures dream? Scientists put underwater cameras on sleeping octopuses and saw their skin rapidly flash yellow, red, and spiky green! Researchers believe they are dreaming of chasing crabs!",
+        content: `When you fall asleep, do you dream of flying, eating ice cream, or running on the playground?
 
-At an animal sanctuary nestled high in the misty green mountains, two tiny red panda cubs named Mochi and Peanut have made their big world debut!
+Marine biologists discovered that eight-armed octopuses have sweet dreams too!
 
-When they were born three months ago, they were no bigger than an apple. Their mom, Sakura, kept them tucked inside a hollow log nest filled with soft dried leaves.
+While taking a cozy nap in rocky reef dens, octopuses experience a special kind of sleep. Suddenly, their skin begins to pulse with bright rainbow colors. Tiny skin pockets called chromatophores expand and shrink, making the sleeping octopus turn creamy white, then fiery orange, then bumpy green!
 
-Today, Peanut peeked his fluffy nose out first. He gave a tiny sneeze, stretched his ringed tail, and cautiously climbed onto a mossy tree branch. Sister Mochi followed right behind him, rolling over like a furry red bowling ball! Red pandas use their bushy striped tails like acrobats use tightrope poles—to keep their balance!`
+Scientists believe that during these sleep stages, the octopus's big brain is replaying its daytime adventures—like sneaking up on a delicious crab!`
       },
       curious: {
-        summary: "Born three months ago, two endangered red panda cubs in the Himalayan foothills have taken their first outdoor climbs. Red pandas possess a unique 'false thumb' that helps them grip bamboo!",
-        content: `Two red panda cubs, Peanut and Mochi, have taken their very first steps into the outdoor canopy, delighting zoologists and wildlife lovers worldwide.
+        summary: "Neurobiologists discovered that octopuses experience two distinct sleep stages: 'quiet sleep' and 'active sleep'. During active sleep, they exhibit rapid eye movements and flash vivid camouflage patterns.",
+        content: `Octopuses have nine brains—one central brain and a mini-brain inside each of their eight flexible arms. But what happens when an octopus goes to bed?
 
-Red pandas are not closely related to black-and-white giant pandas—in fact, they are in a biological family all of their own, closer to raccoons and weasels. They are about the size of a domestic housecat, but with a magnificent, thick fur coat that protects them from Himalayan blizzards.
+A research team studying cephalopods in laboratory habitats noticed that octopuses don't simply drift quietly. Every 30 to 40 minutes, a sleeping octopus enters an 'active sleep' phase that looks remarkably like human REM (Rapid Eye Movement) sleep.
 
-One of their coolest superpowers is an extra 'false thumb'! It is actually an enlarged wrist bone that allows red pandas to grasp slippery bamboo stalks with surgical precision. 
+During this stage, their breathing speeds up, their suckers twitch, and their skin puts on an astonishing light show. They flash camouflage patterns that match rocky ledges, sandy floors, and coral reefs.
 
-Conservationists report that both cubs are climbing skillfully and learning how to forage. Since fewer than 10,000 red pandas remain in the wild, the healthy birth of twin cubs is a giant win for global biodiversity!`
+Because cephalopods use camouflage to hunt prey and hide from sharks while awake, neuroscientists conclude that octopuses are likely consolidating their memories—replaying and practicing their hunting maneuvers in their dreams!`
       },
       junior: {
-        summary: "Twin cubs of the endangered Ailurus fulgens (red panda) have begun canopy locomotion trials, marking a milestone for international captive breeding and conservation initiatives.",
-        content: `Zookeepers and conservation biologists have recorded the first successful arboreal excursions of twin red panda cubs (Ailurus fulgens), a species classified as Endangered on the IUCN Red List.
+        summary: "Cephalopod sleep architecture exhibits a two-stage cycle homologous to vertebrate non-REM and REM sleep, characterized by dynamic chromatic display modulation and neural memory consolidation.",
+        content: `In a breakthrough study of invertebrate neurobiology, researchers documented that Octopus insularis displays biphasic sleep cycles. Periods of 'quiet sleep' (characterized by stable, pale integument and low metabolic rate) alternate cyclically with brief, dynamic 'active sleep' states.
 
-Arboreal mammals require highly coordinated motor reflexes and prehensile adaptations. Red pandas uniquely possess a modified radial sesamoid bone—often termed a 'pseudo-thumb'—which acts antagonistically against their other five digits to clamp onto narrow branches and bamboo culms.
+During active sleep, which persists for approximately 60 seconds per cycle, octopuses exhibit sudden involuntary muscle twitching, rapid pupil constriction, and intricate chromatic patterning mediated by millions of neuromuscular dermal chromatophores.
 
-Additionally, red pandas possess flexible ankles that can rotate 180 degrees, allowing them to descend tree trunks headfirst with remarkable dexterity. Because habitat fragmentation throughout Nepal, Bhutan, and southwestern China threatens wild populations, genetic diversity programs in conservation centers are indispensable for future rewilding projects.`
+These color and textural permutations mirror the exact deceptive camouflage displays deployed during daytime predatory interactions with crustaceans. This discovery demonstrates that complex two-stage sleep and offline neural memory consolidation evolved independently in cephalopods and vertebrates through convergent evolution.`
       }
     },
-    didYouKnow: "Red pandas wrap their long, bushy tails around their faces like a cozy winter scarf when they sleep in snowy trees!",
+    didYouKnow: "An octopus has three hearts and blue blood! Two hearts pump blood to its gills, while the third heart circulates oxygen to the rest of its body.",
     wordDetective: [
-      { word: "Arboreal", pronunciation: "ar-BOR-ee-ul", meaning: "Animals that spend most of their lives living and playing up in trees." },
-      { word: "Biodiversity", pronunciation: "bye-oh-dy-VER-sih-tee", meaning: "The incredible variety of all living animals, plants, and critters on Earth." },
-      { word: "Pseudo-thumb", pronunciation: "SOO-doh thumb", meaning: "A special wrist bone that acts just like an extra thumb for gripping things." }
+      { word: "Chromatophore", pronunciation: "kroh-MAT-uh-for", meaning: "A special cell in an octopus's skin filled with colorful pigment that expands like a balloon to change color!" },
+      { word: "Cephalopod", pronunciation: "SEF-uh-luh-pod", meaning: "The clever sea animal family that includes octopuses, squids, and cuttlefish (it means 'head-foot')." },
+      { word: "Consolidation", pronunciation: "kon-sol-ih-DAY-shun", meaning: "The process where your sleeping brain organizes memories and locks in what you learned during the day." }
     ],
     quiz: {
-      question: "How do red pandas use their big bushy tails when walking on branches?",
-      options: ["As a parachute", "Like an acrobat's balancing pole", "To wave hello to birds", "To tickle their friends"],
+      question: "Why do octopuses change colors and flash patterns while asleep?",
+      options: ["Because they are cold", "They are in an active dream sleep stage replaying daytime memories", "To scare away mermaids", "Because their alarm clock went off"],
       correctIndex: 1,
-      explanation: "Their heavy, striped tail provides counter-balance so they can walk across skinny branches high above the ground without tumbling!"
+      explanation: "Just like humans dream during REM sleep, octopuses enter an active sleep stage where their brain replays daytime hunting maneuvers and flashes camouflage colors!"
     },
-    reactions: { thumbsUp: 95, heart: 160, wow: 38, laugh: 12 }
+    reactions: { thumbsUp: 110, heart: 185, wow: 142, laugh: 8 }
   },
+
+  // 3. INVENTIONS & TECH - LATEST DISCOVERY
   {
-    id: "tech-flying-cleaning-drone",
-    title: "12-Year-Old Inventions Club Builds Ocean-Cleaning Solar Drone!",
-    slug: "ocean-cleaning-drone",
+    id: "tech-robo-seabird",
+    title: "Engineers Build Robo-Puffin That Flies in the Air and Dives Deep Underwater!",
+    slug: "flying-diving-robo-seabird",
+    isFeatured: false,
+    difficulty: "master",
+    difficultyLabel: "⭐⭐⭐ Master Tier",
     category: "tech",
     categoryLabel: "Inventions & Tech",
     categoryEmoji: "⚡",
     bannerEmoji: "🤖",
-    gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    gradient: "linear-gradient(135deg, #0984e3 0%, #00cec9 100%)",
     readTime: "3 min read",
-    date: "Kid Innovator",
+    audioTime: "1:45",
+    date: "Robotics Breakthrough",
     heroImage: `<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
       <defs>
-        <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#48dbfb"/>
-          <stop offset="60%" stop-color="#0abde3"/>
-          <stop offset="100%" stop-color="#10ac84"/>
+        <linearGradient id="splitSkyOcean" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#74b9ff"/>
+          <stop offset="48%" stop-color="#dfe6e9"/>
+          <stop offset="50%" stop-color="#0984e3"/>
+          <stop offset="100%" stop-color="#006266"/>
         </linearGradient>
       </defs>
-      <rect width="600" height="320" fill="url(#oceanGrad)" rx="16"/>
-      <!-- Sun -->
-      <circle cx="500" cy="60" r="35" fill="#feca57"/>
-      <!-- Waves -->
-      <path d="M0,230 Q70,210 140,230 T280,230 T420,230 T560,230 L600,230 L600,320 L0,320 Z" fill="#006266" opacity="0.4"/>
-      <path d="M0,250 Q60,235 120,250 T240,250 T360,250 T480,250 T600,250 L600,320 L0,320 Z" fill="#009432" opacity="0.25"/>
-      <!-- Friendly Turtle -->
-      <g transform="translate(80, 240)">
-        <ellipse cx="30" cy="20" rx="25" ry="16" fill="#1dd1a1"/>
-        <circle cx="60" cy="18" r="8" fill="#10ac84"/>
-        <circle cx="62" cy="16" r="1.5" fill="#111"/>
-        <!-- Flippers -->
-        <ellipse cx="25" cy="8" rx="14" ry="6" fill="#10ac84" transform="rotate(-20 25 8)"/>
-        <ellipse cx="25" cy="32" rx="14" ry="6" fill="#10ac84" transform="rotate(20 25 32)"/>
+      <rect width="600" height="320" fill="url(#splitSkyOcean)" rx="24"/>
+      <!-- Water Surface line with splashes -->
+      <line x1="0" y1="160" x2="600" y2="160" stroke="#fff" stroke-width="3" stroke-dasharray="16 8"/>
+      <!-- Air Section: Sun & clouds -->
+      <circle cx="510" cy="55" r="30" fill="#feca57"/>
+      <!-- The Robo-Puffin (Half diving through the water interface!) -->
+      <g transform="translate(260, 105) rotate(25)">
+        <!-- Sleek Robot Body -->
+        <ellipse cx="40" cy="40" rx="60" ry="26" fill="#2d3436"/>
+        <ellipse cx="40" cy="46" rx="42" ry="16" fill="#f5f6fa"/>
+        <!-- Beak (Bright orange puffin sensor) -->
+        <polygon points="95,35 130,42 95,55" fill="#ff7675"/>
+        <line x1="95" y1="45" x2="115" y2="45" stroke="#ffeaa7" stroke-width="3"/>
+        <!-- Camera Eye -->
+        <circle cx="85" cy="34" r="7" fill="#00cec9"/>
+        <circle cx="86" cy="33" r="2.5" fill="#fff"/>
+        <!-- Dual-Morphing Wings -->
+        <path d="M30,30 L-10,-20 L40,-5 Z" fill="#0984e3" stroke="#74b9ff" stroke-width="2"/>
+        <path d="M30,50 L-5,85 L35,65 Z" fill="#0984e3" stroke="#74b9ff" stroke-width="2"/>
+        <!-- Jet Propulsion Splash & Bubbles -->
+        <circle cx="-35" cy="40" r="8" fill="#fff" opacity="0.7"/>
+        <circle cx="-55" cy="42" r="14" fill="#fff" opacity="0.4"/>
       </g>
-      <!-- Solar Catamaran Drone -->
-      <g transform="translate(240, 140)">
-        <!-- Floats -->
-        <rect x="0" y="55" width="130" height="18" rx="8" fill="#ff6b6b"/>
-        <rect x="0" y="85" width="130" height="18" rx="8" fill="#ff6b6b"/>
-        <!-- Deck -->
-        <rect x="25" y="45" width="80" height="45" rx="6" fill="#f1f2f6"/>
-        <!-- Solar Panels (Blue Grid) -->
-        <rect x="30" y="50" width="70" height="35" rx="4" fill="#2e86de"/>
-        <line x1="30" y1="67" x2="100" y2="67" stroke="#fff" stroke-width="1.5"/>
-        <line x1="53" y1="50" x2="53" y2="85" stroke="#fff" stroke-width="1.5"/>
-        <line x1="76" y1="50" x2="76" y2="85" stroke="#fff" stroke-width="1.5"/>
-        <!-- Camera Eye / Sensor -->
-        <circle cx="115" cy="64" r="8" fill="#333"/>
-        <circle cx="116" cy="63" r="3" fill="#00d2d3"/>
-        <!-- Front Scooper Net -->
-        <polygon points="120,60 160,50 160,80 120,70" fill="#ffd32a" opacity="0.8" stroke="#ffa801" stroke-width="2"/>
-        <!-- Propeller splash -->
-        <path d="M-5,65 Q-20,60 -15,75" stroke="#fff" stroke-width="3" fill="none"/>
+      <!-- Underwater Fish looking at the robot in awe -->
+      <g transform="translate(100, 230)">
+        <ellipse cx="20" cy="15" rx="18" ry="10" fill="#fdcb6e"/>
+        <polygon points="2,15 -10,8 -10,22" fill="#fdcb6e"/>
+        <circle cx="28" cy="12" r="2" fill="#111"/>
       </g>
+      <text x="140" y="225" font-size="20">🐟 ?!</text>
     </svg>`,
-    badge: "Kid Inventor Spotlight",
+    badge: "Bio-Hybrid Robotics",
     targetAges: ["little", "curious", "junior"],
     versions: {
       little: {
-        summary: "A team of middle schoolers built a floating robot boat powered by sunshine! The robot scoots across harbors gobbling up plastic trash to keep turtles safe.",
-        content: `Who says you need a college degree to be an inventor?
+        summary: "Puffins are adorable seabirds that can flap their wings in the air and then swim underwater like fish! Now, scientists have built a real robot bird that can fly through the clouds and plunge underwater without stopping!",
+        content: `Have you ever seen a puffin? They look like tiny penguins with colorful rainbow beaks!
 
-Four seventh-graders in Maine loved going swimming at their local marina, but they hated seeing soda bottle caps and snack wrappers floating in the water.
+Unlike penguins who can only swim, puffins have a magical double-power: they fly high in the ocean breeze, and when they spot a snack, SPLASH! They dive straight into the deep waves and use their wings like flippers!
 
-Instead of just feeling sad, they used their school's robotics club to build **Bubble-Bot 3000**! 
+Robotics engineers in California thought: 'Why can't robots do that too?'
 
-Bubble-Bot is a miniature boat with two yellow pontoons and shiny blue solar panels on top. As it glides across the water powered purely by the sun, its rotating front scoop gently captures floating plastic debris and dumps it into a recycled mesh basket. The local sea turtles and ducks are already swimming much happier!`
+So they built **Nautilus-Wing**! It is a lightweight waterproof robot equipped with transforming wings. When flying in the air, its wings stretch out wide. But the moment it crashes through the sea surface, its wings tuck tightly, turning into high-speed underwater propellers to monitor endangered coral reefs!`
       },
       curious: {
-        summary: "Seventh-grade students engineered an autonomous solar-powered catamaran called Bubble-Bot. Using an inexpensive microcomputer and camera AI, it detects floating ocean trash and scoops it up!",
-        content: `In an inspiring display of young engineering, four 12-year-old students created an autonomous floating drone designed to clear plastic litter from harbors and canals.
+        summary: "Inspired by the dual-medium locomotion of puffins and diving ducks, mechanical engineers developed a morphing-wing drone capable of seamless air-to-water transitions and autonomous coral reef inspection.",
+        content: `Designing a machine that can travel through both air and water is one of the hardest challenges in engineering. Air is thin and light, while water is nearly 800 times denser and heavier!
 
-The vessel, named Bubble-Bot, is built on a lightweight catamaran hull made from recycled plastic pipes. It runs on dual electric thrusters energized by a 40-watt rooftop solar panel and rechargeable lithium-iron batteries.
+To solve this physics riddle, roboticists studied seabirds like puffins and murres. These birds have flexible wing joints that adjust stiffness depending on whether they are pushing against thin air or thick water.
 
-To steer toward trash without bumping into ducks or boats, the kids programmed a Raspberry Pi computer with a basic computer vision camera. When the camera spots a floating bottle or bag, the drone steers right towards it and activates a slow-moving conveyor mesh.
+The resulting robot, nicknamed the 'Aqua-Puffin', features smart morphing carbon-fiber wings. Above the water, a brushless electric motor flaps the wings for aerodynamic lift. When diving beneath ocean waves, a miniature pneumatic hinge folds the wingtips back by 40%, preventing the wings from snapping under water pressure.
 
-In their first harbor test, the kids' robot collected over 35 pounds of trash in just two afternoons! Several coastal towns have already reached out to help the students build more units for summer beaches.`
+Equipped with 4K underwater cameras and sonar, this flying submarine can inspect hard-to-reach ocean sea caves, spot oil spills, and safely film marine animals without loud motor noise!`
       },
       junior: {
-        summary: "A middle school STEM initiative produced an autonomous, solar-powered catamaran utilizing edge-based machine learning for real-time marine debris identification and collection.",
-        content: `Addressing coastal microplastic contamination at its source, four seventh-grade student engineers engineered an autonomous surface vessel (ASV) equipped with edge computing capabilities.
+        summary: "Utilizing bio-inspired compliant wing kinematics, researchers have engineered an amphibious unmanned aerial-aquatic vehicle (UAV/UUV) featuring dynamic density compensation and adaptive hydro-aerodynamic morphing.",
+        content: `Locomotion across fluid interfaces poses severe hydro-aerodynamic constraints due to the 800-fold density disparity between air and water. High-aspect-ratio airfoils optimized for low Reynolds number flight normally experience catastrophic structural overload upon fluid impact.
 
-The catamaran platform integrates twin pontoon hulls with a balanced brushless DC propulsion array. It utilizes a solar photovoltaic array coupled to a battery management system (BMS), ensuring continuous operation through ambient energy harvesting.
+Engineers overcame this hydrodynamic barrier by modeling the avian musculoskeletal morphology of Fratercula arctica (Atlantic puffin). The aerial-aquatic vehicle utilizes bistable composite wing spars coupled to high-torque servomotors.
 
-The vessel's navigational autonomy relies on a custom OpenCV neural network running on an embedded single-board computer. The model was trained on thousands of harbor imagery sets to classify plastic polymers versus marine fauna, preventing inadvertent interactions with local wildlife. Once locked on debris, a conveyor scooper directs refuse into an internal retrieval hopper with zero emissions.`
+Upon surface breaching, the wings rapidly decamber and contract their effective surface area by 42%, transitioning from aerodynamic lift-generation to low-drag hydrodynamic flipper propulsion. Dual-mode waterproof brushless thrusters provide continuous forward thrust across the boundary layer, paving the way for multi-domain ecological sensing.`
       }
     },
-    didYouKnow: "Over 80% of ocean plastic enters waterways from dry land via rivers and storm drains, which means stopping it near harbors makes a huge difference!",
+    didYouKnow: "Atlantic puffins can dive down to 200 feet (60 meters) below the ocean surface and hold their breath for up to a minute while chasing fish!",
     wordDetective: [
-      { word: "Catamaran", pronunciation: "kat-uh-muh-RAN", meaning: "A fast, stable boat that has two parallel floating hulls instead of one." },
-      { word: "Autonomous", pronunciation: "aw-TAHN-uh-mus", meaning: "Able to move, navigate, or make decisions on its own without a human remote control." },
-      { word: "Photovoltaic", pronunciation: "foh-toh-vol-TAY-ik", meaning: "Turning rays of sunshine directly into clean electrical power!" }
+      { word: "Amphibious", pronunciation: "am-FIB-ee-us", meaning: "Able to live, operate, or move smoothly in both air/land and underwater!" },
+      { word: "Morphing", pronunciation: "MORF-ing", meaning: "Changing shape or structure smoothly to perform different jobs." },
+      { word: "Reynolds Number", pronunciation: "REN-ulds num-ber", meaning: "A physics equation that measures how fluids like air and water flow around moving objects." }
     ],
     quiz: {
-      question: "How does the kid-made robot get its energy to move?",
-      options: ["Diesel gas engine", "Wound-up rubber bands", "Solar panels soaking up sunshine", "Plugging in a 10-mile extension cord"],
-      correctIndex: 2,
-      explanation: "Bubble-Bot has rooftop solar panels that capture sunlight, meaning it produces zero air pollution while cleaning the sea!"
+      question: "How does the robo-puffin change its wings when it dives into deep water?",
+      options: ["It drops them off", "It folds them smaller and stiffer so water pressure doesn't break them", "It turns them into giant balloons", "It replaces them with rocket boosters"],
+      correctIndex: 1,
+      explanation: "Water is 800 times denser than air! The robot folds its wings smaller so the heavy water pressure doesn't snap them while swimming!"
     },
-    reactions: { thumbsUp: 120, heart: 145, wow: 88, laugh: 3 }
+    reactions: { thumbsUp: 98, heart: 112, wow: 178, laugh: 6 }
   },
+
+  // 4. DINO & HISTORY - LATEST DISCOVERY
   {
-    id: "earth-t-rex-feathers",
-    title: "Baby T-Rex Fossils Suggest They Looked Like Giant Fluffy Chicks!",
-    slug: "fluffy-t-rex-fossils",
+    id: "earth-dino-mummy-skin",
+    title: "Remarkable 66-Million-Year-Old 'Dino Mummy' Found with Real Preserved Skin!",
+    slug: "dinosaur-mummy-preserved-skin",
+    isFeatured: false,
+    difficulty: "explorer",
+    difficultyLabel: "⭐⭐ Explorer Tier",
     category: "earth",
-    categoryLabel: "Dino Digs & History",
+    categoryLabel: "Dino & History",
     categoryEmoji: "🦖",
     bannerEmoji: "🦕",
-    gradient: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+    gradient: "linear-gradient(135deg, #f5cd79 0%, #e17055 100%)",
     readTime: "3 min read",
-    date: "Paleo News",
+    audioTime: "1:35",
+    date: "Paleontology Scoop",
     heroImage: `<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
       <defs>
-        <linearGradient id="dinoGrad" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="canyonGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#fdcb6e"/>
-          <stop offset="100%" stop-color="#e17055"/>
+          <stop offset="60%" stop-color="#e17055"/>
+          <stop offset="100%" stop-color="#6c5ce7"/>
         </linearGradient>
       </defs>
-      <rect width="600" height="320" fill="url(#dinoGrad)" rx="16"/>
-      <!-- Prehistoric Ferns -->
-      <path d="M40,320 Q60,220 20,180 Q80,210 110,320 Z" fill="#2d3436" opacity="0.3"/>
-      <path d="M500,320 Q480,200 540,160 Q490,210 460,320 Z" fill="#2d3436" opacity="0.3"/>
-      <!-- Baby T-Rex (Fluffy & Cute!) -->
-      <g transform="translate(230, 90)">
-        <!-- Fluffy Body -->
-        <circle cx="70" cy="90" r="50" fill="#f39c12"/>
-        <path d="M60,40 Q90,30 110,60 Q80,70 60,40 Z" fill="#e67e22"/>
-        <!-- Fluffy tufts -->
-        <circle cx="40" cy="70" r="15" fill="#f1c40f"/>
-        <circle cx="50" cy="110" r="16" fill="#f1c40f"/>
-        <circle cx="95" cy="115" r="14" fill="#f1c40f"/>
-        <!-- Tail -->
-        <path d="M25,100 Q-15,110 -30,80 Q-5,85 20,90 Z" fill="#e67e22"/>
-        <!-- Head -->
-        <ellipse cx="120" cy="65" rx="36" ry="28" fill="#f39c12"/>
-        <!-- Open Snout with tiny teeth -->
-        <path d="M135,60 L165,65 L135,78 Z" fill="#e67e22"/>
-        <polygon points="140,65 145,70 148,65" fill="#fff"/>
-        <polygon points="150,66 155,71 158,66" fill="#fff"/>
-        <!-- Big curious eye -->
-        <circle cx="125" cy="55" r="10" fill="#fff"/>
-        <circle cx="127" cy="55" r="6" fill="#2d3436"/>
-        <circle cx="129" cy="53" r="2.5" fill="#fff"/>
-        <!-- Tiny dino arms -->
-        <path d="M100,95 Q115,100 110,110" stroke="#d35400" stroke-width="6" stroke-linecap="round" fill="none"/>
-        <!-- Feet -->
-        <path d="M65,135 L65,170 L50,175 M65,170 L80,175" stroke="#d35400" stroke-width="7" stroke-linecap="round" fill="none"/>
-        <path d="M95,135 L105,170 L95,175 M105,170 L120,175" stroke="#d35400" stroke-width="7" stroke-linecap="round" fill="none"/>
-        <!-- Eggshell fragments nearby -->
-        <polygon points="-10,170 15,150 20,180" fill="#fff" opacity="0.8"/>
-        <polygon points="130,170 150,155 160,180" fill="#fff" opacity="0.8"/>
+      <rect width="600" height="320" fill="url(#canyonGrad)" rx="24"/>
+      <!-- Sandstone layers -->
+      <path d="M0,180 L600,160 L600,320 L0,320 Z" fill="#d63031" opacity="0.3"/>
+      <path d="M0,220 L600,210 L600,320 L0,320 Z" fill="#634235" opacity="0.5"/>
+      <!-- Dino Mummy Fossil Bed -->
+      <g transform="translate(180, 110)">
+        <!-- Skeleton & Preserved Skin Outline -->
+        <ellipse cx="120" cy="80" rx="90" ry="45" fill="#f8a5c2" opacity="0.3"/>
+        <!-- Textured Scales & Spikes along spine -->
+        <path d="M40,65 Q120,40 210,80" stroke="#ffeaa7" stroke-width="6" fill="none"/>
+        <polygon points="60,55 65,42 70,55" fill="#fab1a0"/>
+        <polygon points="85,50 90,36 95,50" fill="#fab1a0"/>
+        <polygon points="110,48 115,32 120,48" fill="#fab1a0"/>
+        <polygon points="135,50 140,36 145,50" fill="#fab1a0"/>
+        <polygon points="160,56 165,44 170,56" fill="#fab1a0"/>
+        <!-- Duck-billed Head with real skin impression -->
+        <ellipse cx="230" cy="85" rx="35" ry="20" fill="#ffeaa7"/>
+        <path d="M250,80 Q275,85 260,95 Q245,95 240,85 Z" fill="#fdcb6e"/>
+        <!-- Ribs visible under fossilized skin -->
+        <line x1="90" y1="65" x2="85" y2="95" stroke="#fff" stroke-width="4"/>
+        <line x1="110" y1="65" x2="105" y2="100" stroke="#fff" stroke-width="4"/>
+        <line x1="130" y1="67" x2="125" y2="100" stroke="#fff" stroke-width="4"/>
+        <line x1="150" y1="72" x2="148" y2="95" stroke="#fff" stroke-width="4"/>
+        <!-- Magnifying Glass Discovery -->
+        <circle cx="95" cy="50" r="28" stroke="#00cec9" stroke-width="5" fill="none"/>
+        <line x1="115" y1="70" x2="140" y2="95" stroke="#00cec9" stroke-width="6" stroke-linecap="round"/>
       </g>
+      <!-- Sparkle discovery stars -->
+      <text x="70" y="90" font-size="28">✨</text>
+      <text x="470" y="80" font-size="32">🔍</text>
     </svg>`,
-    badge: "Fossil Discovery",
+    badge: "Fossil Mummy",
     targetAges: ["little", "curious", "junior"],
     versions: {
       little: {
-        summary: "Did you know that when the terrifying Tyrannosaurus Rex hatched from its egg, it wasn't scaly at all? It was covered in soft, fuzzy down feathers, just like a golden baby duckling!",
-        content: `When you think of a T-Rex, you probably picture a giant, roaring green monster with huge scaly teeth.
+        summary: "Most dinosaur discoveries are just bare white bones. But paleontologists in Wyoming uncovered a super-rare 'dinosaur mummy' with actual bumpy skin, scaly armor, and spiky ridges still attached after 66 million years!",
+        content: `When you visit a natural history museum, you usually see giant dinosaur skeletons made of brown fossil bones.
 
-But fossil hunters have uncovered surprising clues! When a baby T-Rex first cracked out of its egg, it was no bigger than a turkey—and covered from head to toe in soft, fluffy peach fuzz feathers!
+Now imagine finding a dinosaur that still has its REAL skin!
 
-Why did they need feathers? Because baby dinosaurs were warm-blooded! Deep inside prehistoric forests, night temperatures would drop quickly, and the baby dinos couldn't make enough heat on their own. Their downy fluff kept them snug as a bug!`
+Fossil hunters in Wyoming discovered two magnificent duck-billed dinosaurs called hadrosaurs. Because these dinosaurs were buried super fast under ancient river mud, their soft tissues didn't rot away.
+
+Instead, their skin turned into stone! Scientists can see every tiny pebble-sized scale, spiky crests running down their backs, and even the pads on their feet. For the very first time, we know exactly what it felt like to pet a real dinosaur!`
       },
       curious: {
-        summary: "Paleontologists studying exceptionally preserved theropod fossils in Montana have reconstructed juvenile T-Rexes with coats of dense plumulaceous feathers, proving close links between dinosaurs and modern birds.",
-        content: `Close your eyes and imagine a baby Tyrannosaurus rex. If you pictured a fierce, scaly lizard, paleontologists have news for you: it probably looked far more like an overgrown, fluffy chick!
+        summary: "In a landmark excavation in Wyoming's Hell Creek Formation, paleontologists uncovered an exquisitely preserved Edmontosaurus specimen retaining 3D epidermal scale patterns and keratinous spinal frills.",
+        content: `Finding a dinosaur skeleton is thrilling—but finding a 'dinosaur mummy' is like winning the ultimate paleontology jackpot!
 
-Recent discoveries of closely related tyrannosauroids in China and North America have revealed direct imprints of primitive feathers, called **proto-feathers**. 
+Researchers working in the badlands of Wyoming announced the recovery of an *Edmontosaurus* (a duck-billed herbivore) so well-preserved that soft tissues petrified before decomposing.
 
-When T-Rex hatchlings emerged from their 18-inch eggs, they were vulnerable, slender, and weighed only about 10 to 15 pounds. Lacking the massive thermal mass of a 9-ton adult, hatchlings relied on a thick coat of downy proto-feathers for thermoregulation. 
+Using high-resolution CT scanners and laser imaging, scientists confirmed that the specimen preserves 3D impressions of hexagonal scales, thick muscular foot pads, and a row of defensive keratin spikes along the spine that nobody knew existed!
 
-As they grew into gargantuan adult predators over 20 years, they likely shed much of this feather coat because their immense bodies generated plenty of internal heat!`
+Before this discovery, artists had to guess what dinosaur skin looked like. Now, microscopic analysis shows hadrosaur skin was tough, pebbled like a basketball, and varied in pattern between the belly, neck, and tail to help the animal camouflage in ancient redwood forests.`
       },
       junior: {
-        summary: "Phylogenetic analysis of tyrannosauroid integument specimens underscores that juvenile apex theropods expressed filamentous proto-feathers for metabolic homeostasis before ontogenetic changes led to scale retention in mature specimens.",
-        content: `The paradigm of the scaly Tyrannosaurus rex has undergone profound revision in modern vertebrate paleontology. While mature adult skin impressions exhibit reticula and small basement scales, juvenile specimens of basal tyrannosauroids (such as Yutyrannus huali and Dilong paradoxus) clearly exhibit branched filamentous integumentary structures.
+        summary: "Exceptionally preserved soft-tissue integument from Hell Creek hadrosaurid specimens provides microscopic evidence of three-dimensional keratinous rhamphotheca, reticulate scales, and dorsomedial frills.",
+        content: `Taphonomic conditions capable of preserving unmineralized dinosaurian integument are extraordinarily rare. Excavations in the Maastrichtian strata of the Hell Creek Formation have yielded an exceptional hadrosaurid (Edmontosaurus annectens) exhibiting extensive mummified epidermal envelopes.
 
-Thermoregulatory physics dictates that metabolic surface-area-to-volume ratio drops precipitously as an organism scales up in mass. A 6-kilogram hatchling loses heat rapidly to ambient air, necessitating insulating plumulaceous plumage to preserve core body temperature. 
+Rapid burial in hypoxic fluvial silts arrested post-mortem bacterial decomposition, facilitating mineral replacement of structural keratin and dermal layers. 
 
-Conversely, an 8,000-kilogram mature Tyrannosaurus would face hyperthermia risks if heavily feathered. Thus, evidence strongly favors an ontogenetic shift: fuzzy down-insulated juveniles that molted down as they grew into titan predators.`
+Scanning electron microscopy (SEM) reveals polymorphic scale microstructures: polygonal basement scales interspaced with larger feature scales and an unsegmented midline dorsal frill. Biomechanical reconstructions indicate that the dermal envelope possessed significant tensile elasticity, resolving long-standing phylogenetic debates regarding dinosaur soft-tissue morphology.`
       }
     },
-    didYouKnow: "Birds are living theropod dinosaurs! In fact, a robin in your backyard is more closely related to a T-Rex than a T-Rex was to a Stegosaurus!",
+    didYouKnow: "Scientists have now discovered and named over 1,400 distinct species of dinosaurs across more than 90 countries on Earth—and nearly 50 new species are found every single year!",
     wordDetective: [
-      { word: "Paleontologist", pronunciation: "pay-lee-on-TAH-luh-jist", meaning: "A detective scientist who digs up fossils to study creatures from millions of years ago." },
-      { word: "Thermoregulation", pronunciation: "ther-moh-reg-yoo-LAY-shun", meaning: "The ability of an animal's body to keep itself at the perfect warm temperature." },
-      { word: "Theropod", pronunciation: "THEER-uh-pod", meaning: "A family of two-legged, hollow-boned dinosaurs that includes T-Rex and all modern birds!" }
+      { word: "Taphonomy", pronunciation: "taf-ON-uh-mee", meaning: "The branch of paleontology that studies how living creatures decay and become preserved as fossils." },
+      { word: "Hadrosaur", pronunciation: "HAD-roh-sor", meaning: "A large, plant-eating dinosaur famous for having a flat, duck-like bill and chewing hundreds of tough prehistoric leaves!" },
+      { word: "Keratin", pronunciation: "KER-uh-tin", meaning: "The tough, natural protein that makes up your fingernails, bird beaks, and dinosaur horns!" }
     ],
     quiz: {
-      question: "Why did baby T-Rex dinosaurs have fluffy feathers?",
-      options: ["To tickle their dino siblings", "To keep their little bodies warm before they grew big", "To fly up into jungle trees", "To blend in with snowdrifts"],
+      question: "Why was this 'dinosaur mummy' able to keep its skin for 66 million years?",
+      options: ["Ancient cavemen wrapped it in bandages", "It was buried very quickly under muddy river sediment before it could rot away", "It was frozen in a block of strawberry ice cream", "The skin was made of steel"],
       correctIndex: 1,
-      explanation: "Just like baby chicks, baby dinos had small bodies that lost heat quickly, so their fluffy down feathers worked like a warm fleece jacket!"
+      explanation: "Rapid burial in thick river mud prevented oxygen and bacteria from breaking down the skin, allowing the soft scales to turn into stone fossils over millions of years!"
     },
-    reactions: { thumbsUp: 81, heart: 92, wow: 130, laugh: 15 }
+    reactions: { thumbsUp: 105, heart: 130, wow: 189, laugh: 5 }
   },
+
+  // 5. SPORTS & ACTION - LATEST INSPIRATION
   {
-    id: "sports-kid-skate-record",
-    title: "10-Year-Old Skater Lands Historic 900-Degree Spin at Summer Games!",
-    slug: "kid-skate-record-900",
+    id: "sports-math-world-record",
+    title: "15-Year-Old 'Human Calculator' Sets Mind-Blowing World Record in Fast Math!",
+    slug: "teen-human-calculator-world-record",
+    isFeatured: false,
+    difficulty: "starter",
+    difficultyLabel: "⭐ Starter Tier",
     category: "sports",
-    categoryLabel: "Sports & Action",
+    categoryLabel: "Sports & Play",
     categoryEmoji: "🛹",
     bannerEmoji: "🏆",
     gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
     readTime: "2 min read",
-    date: "Super Athlete",
+    audioTime: "1:20",
+    date: "Brain Sports",
     heroImage: `<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
       <defs>
-        <linearGradient id="skateGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#ff9ff3"/>
-          <stop offset="100%" stop-color="#54a0ff"/>
+        <linearGradient id="mathSportGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3742fa"/>
+          <stop offset="100%" stop-color="#5352ed"/>
         </linearGradient>
       </defs>
-      <rect width="600" height="320" fill="url(#skateGrad)" rx="16"/>
-      <!-- Halfpipe Ramp -->
-      <path d="M0,80 Q200,300 300,300 Q400,300 600,80 L600,320 L0,320 Z" fill="#222f3e" opacity="0.6"/>
-      <!-- Skater Boy in Mid-Air Spin -->
-      <g transform="translate(300, 95) rotate(-15)">
-        <!-- Spin swoosh lines -->
-        <circle cx="0" cy="0" r="50" stroke="#feca57" stroke-width="4" stroke-dasharray="15 10" fill="none" opacity="0.8"/>
-        <!-- Skateboard -->
-        <rect x="-45" y="25" width="90" height="12" rx="6" fill="#1dd1a1"/>
-        <circle cx="-30" cy="38" r="6" fill="#ff6b6b"/>
-        <circle cx="30" cy="38" r="6" fill="#ff6b6b"/>
-        <!-- Skater Body -->
-        <rect x="-12" y="-15" width="24" height="35" rx="6" fill="#5f27cd"/>
-        <!-- Helmet -->
-        <circle cx="0" cy="-30" r="16" fill="#ff9f43"/>
-        <circle cx="0" cy="-28" r="13" fill="#ffeaa7"/>
-        <!-- Goggles -->
-        <rect x="-8" y="-32" width="16" height="6" rx="3" fill="#222f3e"/>
-        <!-- Arms doing grab trick -->
-        <line x1="-10" y1="-8" x2="-35" y2="15" stroke="#ff9f43" stroke-width="6" stroke-linecap="round"/>
-        <line x1="10" y1="-8" x2="25" y2="-25" stroke="#ff9f43" stroke-width="6" stroke-linecap="round"/>
+      <rect width="600" height="320" fill="url(#mathSportGrad)" rx="24"/>
+      <!-- Digital Matrix & Lightning Numbers -->
+      <text x="60" y="80" font-size="28" fill="#70a1ff" opacity="0.6">8,492 + 3,175 + 9,204 = ?</text>
+      <text x="320" y="130" font-size="24" fill="#eccc68" opacity="0.5">30.9 SECONDS!</text>
+      <!-- Lightning bolt speed -->
+      <polygon points="300,40 260,110 290,110 250,190 320,100 285,100" fill="#ffa502"/>
+      <!-- The Young Champion -->
+      <g transform="translate(180, 110)">
+        <!-- Medal on chest -->
+        <circle cx="120" cy="115" r="18" fill="#ffd32a" stroke="#ffa502" stroke-width="3"/>
+        <text x="113" y="122" font-size="18">🥇</text>
+        <line x1="110" y1="85" x2="116" y2="102" stroke="#ff4757" stroke-width="4"/>
+        <line x1="130" y1="85" x2="124" y2="102" stroke="#ff4757" stroke-width="4"/>
+        <!-- Smiling Head -->
+        <circle cx="120" cy="50" r="32" fill="#f8c291"/>
+        <!-- Glasses -->
+        <circle cx="108" cy="48" r="9" stroke="#2f3542" stroke-width="3" fill="none"/>
+        <circle cx="132" cy="48" r="9" stroke="#2f3542" stroke-width="3" fill="none"/>
+        <line x1="117" y1="48" x2="123" y2="48" stroke="#2f3542" stroke-width="3"/>
+        <!-- Happy Smile -->
+        <path d="M110,64 Q120,74 130,64" stroke="#2f3542" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Thumbs up hands -->
+        <circle cx="65" cy="110" r="12" fill="#f8c291"/>
+        <text x="56" y="117" font-size="16">👍</text>
+        <circle cx="175" cy="110" r="12" fill="#f8c291"/>
+        <text x="166" y="117" font-size="16">👍</text>
       </g>
-      <!-- Confetti sparks -->
-      <circle cx="180" cy="90" r="4" fill="#ff9ff3"/>
-      <circle cx="420" cy="110" r="5" fill="#feca57"/>
-      <circle cx="360" cy="50" r="3.5" fill="#1dd1a1"/>
-      <circle cx="220" cy="55" r="4" fill="#fff"/>
+      <!-- Confetti -->
+      <circle cx="100" cy="190" r="6" fill="#ff6b81"/>
+      <circle cx="480" cy="190" r="8" fill="#2ed573"/>
+      <circle cx="450" cy="70" r="7" fill="#ffa502"/>
     </svg>`,
-    badge: "World Record",
+    badge: "Mind Athlete",
     targetAges: ["little", "curious", "junior"],
     versions: {
       little: {
-        summary: "Whoosh! 10-year-old Mia spun around two and a half times in mid-air on her skateboard and landed smooth as butter. The whole stadium cheered!",
-        content: `Hold onto your helmets! 
+        summary: "Who needs a calculator? 15-year-old math athlete Aaryan Shukla can add 100 giant numbers together in his head in just 30 seconds! He treats math like a fun sport and says anyone can train their brain to be fast!",
+        content: `How fast can you add 2 + 2? Four! Easy peasy!
 
-Ten-year-old skateboard star Mia just made sports history. On a massive halfpipe ramp taller than a two-story house, Mia zoomed down, soared into the sky, and spun like a dizzy top!
+Now imagine someone flashing 100 giant four-digit numbers on a computer screen—faster than you can blink—and asking you to add them all up in your head!
 
-She did two and a half full spins in the air—that's 900 degrees of spinning—before landing cleanly on her four wheels. 
+15-year-old math champion Aaryan Shukla just set a mind-boggling world record. He added 100 four-digit numbers in his brain in just 30.9 seconds! That is faster than an adult can punch the numbers into a smartphone calculator!
 
-When asked her secret, Mia smiled with her braces showing and said: 'Always wear your helmet, eat peanut butter toast, and never give up if you scrape your knee!'`
+Aaryan doesn't just do math for contests; he travels to schools to teach kids that our brains are like muscles. The more you exercise them with fun puzzles, the stronger and faster they become!`
       },
       curious: {
-        summary: "At the Summer Action Sports Games, 10-year-old Mia Kawada became the youngest female skateboarder in history to land a 900 on the vertical vert ramp.",
-        content: `Twenty-five years after skateboarding legend Tony Hawk landed the world's first 900-degree spin, a 10-year-old phenom has matched the milestone.
+        summary: "Guinness World Record holder Aaryan Shukla demonstrated the power of mental athletics by summing 100 four-digit integers in 30.9 seconds, championing mental math as an exciting global esport.",
+        content: `Just as Olympic sprinters train their leg muscles for explosive speed, 'mental athletes' train their working memory and cognitive speed for mental arithmetic!
 
-During her final vert run, Mia launched over 11 feet above the lip of the 14-foot ramp. Tucking her knees tightly into her chest to maximize rotational velocity, she executed two and a half complete revolutions before locking her trucks cleanly onto the transition.
+During an official Guinness World Records trial in Milan, Italy, 15-year-old Aaryan Shukla took the stage. A digital screen flashed 100 different four-digit numbers (like 7,492 + 1,839 + 6,401...) one after another in less than half a second each.
 
-The crowd erupted in thunderous applause as fellow competitors ran onto the ramp to lift Mia onto their shoulders.
+Without using pencil, paper, or an abacus, Aaryan calculated the massive total in his mind and announced the exact answer in 30.9 seconds.
 
-Mia began skating when she was only four years old at her neighborhood park. She practices gymnastics twice a week to maintain airborne spatial awareness and safety rolling skills!`
+Aaryan began practicing with a mental abacus when he was only six years old. He now helps run youth STEM workshops, inspiring thousands of students to see numbers as a creative playground rather than a stressful test.`
       },
       junior: {
-        summary: "Demonstrating exceptional angular momentum conservation, 10-year-old vert athlete Mia Kawada successfully executed a 900° aerial transition in competitive vert ramp competition.",
-        content: `Executing a 900 requires precise biomechanics and rotational physics. The athlete must generate substantial vertical amplitude to secure sufficient hang time (approximately 1.3 to 1.5 seconds) while initiating torque via upper-body torsion prior to leaving the vert coping.
+        summary: "Displaying unprecedented cognitive processing velocity and working memory capacity, 15-year-old mental calculation champion Aaryan Shukla achieved a verified addition rate of over 3.2 operations per second.",
+        content: `Mental calculation at elite levels requires extreme synchronization of neural circuits responsible for spatial-numerical association (SNARC) and rapid visuospatial scratchpad manipulation.
 
-By pulling her extremities inward toward her center of mass, Mia minimized her rotational inertia, dramatically accelerating her angular velocity. 
+Aaryan Shukla's record-setting performance of summing 100 four-digit numbers in 30.9 seconds represents an average processing cadence of 309 milliseconds per addition. Cognitive scientists attribute this extraordinary throughput to advanced Soroban (mental abacus) visualization techniques.
 
-Completing two-and-a-half rotations necessitates landing blind in the reverse stance (fakie), requiring immaculate muscle memory to absorb several times body weight in G-force upon vert re-entry. Mia's breakthrough heralds a new era of youth dominance in Olympic action sports.`
+By encoding numerical digits into dynamic mental bead positions rather than phonological verbal loops, practitioners bypass linguistic processing bottlenecks, enabling direct parallel computational operations across the parietal lobes.`
       }
     },
-    didYouKnow: "A 900-degree spin is equal to turning in a complete circle two and a half times while flying through the air!",
+    didYouKnow: "Your brain contains approximately 86 billion neurons, and every time you learn a new game, math trick, or sport, your brain creates brand new physical connections!",
     wordDetective: [
-      { word: "Vert Ramp", pronunciation: "VERT ramp", meaning: "A giant U-shaped wooden ramp with completely vertical walls near the top." },
-      { word: "Rotational Inertia", pronunciation: "roh-TAY-shun-ul in-UR-shuh", meaning: "The physical rule that tucking your arms and legs close makes you spin much faster!" },
-      { word: "Fakie", pronunciation: "FAY-kee", meaning: "Riding a skateboard backwards while facing forward." }
+      { word: "Arithmetic", pronunciation: "uh-RITH-muh-tik", meaning: "The branch of mathematics dealing with counting, adding, subtracting, multiplying, and dividing numbers." },
+      { word: "Cognitive", pronunciation: "KOG-nih-tiv", meaning: "Anything related to conscious mental activities like thinking, reasoning, remembering, and learning." },
+      { word: "Abacus", pronunciation: "AB-uh-kus", meaning: "An ancient calculating frame with colorful sliding beads that helps people calculate with lightning speed!" }
     ],
     quiz: {
-      question: "How many full turns are in a 900-degree skateboard spin?",
-      options: ["1 turn", "2 and a half turns", "5 turns", "10 turns"],
+      question: "How long did it take Aaryan to add 100 four-digit numbers in his head?",
+      options: ["3 hours", "Just 30.9 seconds", "2 days", "15 minutes"],
       correctIndex: 1,
-      explanation: "One full turn is 360 degrees. Two full turns are 720 degrees. Add another half turn (180 degrees) and you get 900 degrees!"
+      explanation: "In an official world record test, Aaryan computed all 100 numbers in his brain in an astonishing 30.9 seconds—faster than typing on a calculator!"
     },
-    reactions: { thumbsUp: 104, heart: 77, wow: 152, laugh: 6 }
+    reactions: { thumbsUp: 135, heart: 98, wow: 195, laugh: 3 }
   },
+
+  // 6. WACKY & FUN - LATEST DISCOVERY
   {
-    id: "wacky-singing-toads",
-    title: "Musical Mystery: Forest Toads Sing Duets in Perfect Harmony!",
-    slug: "musical-frogs-harmony",
+    id: "wacky-bats-move-eyes",
+    title: "Scientists Stunned to Discover Bats Can Move Their Eyes After 80 Years of Thinking They Couldn't!",
+    slug: "bats-move-their-eyes-discovery",
+    isFeatured: false,
+    difficulty: "starter",
+    difficultyLabel: "⭐ Starter Tier",
     category: "wacky",
     categoryLabel: "Wacky & Fun",
     categoryEmoji: "🐸",
-    bannerEmoji: "🎶",
+    bannerEmoji: "🦇",
     gradient: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
     readTime: "2 min read",
-    date: "Wacky Nature",
+    audioTime: "1:20",
+    date: "Biology Mythbusters",
     heroImage: `<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" class="hero-svg">
       <defs>
-        <linearGradient id="pondGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#1dd1a1"/>
-          <stop offset="100%" stop-color="#10ac84"/>
-        </linearGradient>
+        <radialGradient id="nightCaveGrad" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#2c3e50"/>
+          <stop offset="100%" stop-color="#0c1017"/>
+        </radialGradient>
       </defs>
-      <rect width="600" height="320" fill="url(#pondGrad)" rx="16"/>
-      <!-- Giant Lilypad -->
-      <ellipse cx="300" cy="220" rx="200" ry="60" fill="#006266"/>
-      <path d="M300,220 L380,265" stroke="#10ac84" stroke-width="4"/>
-      <!-- Frog 1 (Left) -->
-      <g transform="translate(180, 140)">
-        <ellipse cx="30" cy="35" rx="35" ry="25" fill="#2ed573"/>
-        <!-- Eyes -->
-        <circle cx="18" cy="15" r="12" fill="#2ed573"/>
-        <circle cx="18" cy="13" r="6" fill="#fff"/>
-        <circle cx="18" cy="13" r="3" fill="#111"/>
-        <circle cx="42" cy="15" r="12" fill="#2ed573"/>
-        <circle cx="42" cy="13" r="6" fill="#fff"/>
-        <circle cx="42" cy="13" r="3" fill="#111"/>
-        <!-- Vocal sac blowing up like a bubble -->
-        <circle cx="30" cy="45" r="18" fill="#ffeaa7" opacity="0.9"/>
-        <!-- Bowtie -->
-        <polygon points="24,58 36,58 30,55" fill="#eb4d4b"/>
-        <polygon points="24,58 36,58 30,61" fill="#eb4d4b"/>
+      <rect width="600" height="320" fill="url(#nightCaveGrad)" rx="24"/>
+      <!-- Cave Stalactites -->
+      <polygon points="40,0 60,60 80,0" fill="#34495e"/>
+      <polygon points="120,0 140,80 160,0" fill="#34495e"/>
+      <polygon points="440,0 460,70 480,0" fill="#34495e"/>
+      <!-- Sound waves (Echolocation) -->
+      <path d="M230,130 Q170,120 150,90" stroke="#00d2d3" stroke-width="3" fill="none" opacity="0.6"/>
+      <path d="M220,140 Q150,130 130,95" stroke="#00d2d3" stroke-width="3" fill="none" opacity="0.4"/>
+      <!-- Cute Bat hanging upside down and moving eyes! -->
+      <g transform="translate(260, 60)">
+        <!-- Feet gripping ceiling -->
+        <line x1="30" y1="0" x2="30" y2="25" stroke="#7f8c8d" stroke-width="4"/>
+        <line x1="50" y1="0" x2="50" y2="25" stroke="#7f8c8d" stroke-width="4"/>
+        <!-- Furry Bat Body -->
+        <ellipse cx="40" cy="70" rx="35" ry="45" fill="#4b4b4b"/>
+        <!-- Big Ears -->
+        <polygon points="10,40 -5,8 25,30" fill="#5758bb"/>
+        <polygon points="70,40 85,8 55,30" fill="#5758bb"/>
+        <!-- Wrapped Wings -->
+        <path d="M5,45 Q-20,90 25,115 Z" fill="#2d3436"/>
+        <path d="M75,45 Q100,90 55,115 Z" fill="#2d3436"/>
+        <!-- Big Googly Expressive Eyes Moving to the Left! -->
+        <circle cx="28" cy="72" r="13" fill="#fff"/>
+        <circle cx="23" cy="72" r="6" fill="#111"/> <!-- Looking left -->
+        <circle cx="52" cy="72" r="13" fill="#fff"/>
+        <circle cx="47" cy="72" r="6" fill="#111"/> <!-- Looking left -->
+        <!-- Cute Little Bat Nose and Fangs -->
+        <polygon points="38,88 42,88 40,92" fill="#ff7675"/>
+        <polygon points="34,96 36,102 38,96" fill="#fff"/>
+        <polygon points="42,96 44,102 46,96" fill="#fff"/>
       </g>
-      <!-- Frog 2 (Right) -->
-      <g transform="translate(360, 140)">
-        <ellipse cx="30" cy="35" rx="35" ry="25" fill="#7bed9f"/>
-        <circle cx="18" cy="15" r="12" fill="#7bed9f"/>
-        <circle cx="18" cy="13" r="6" fill="#fff"/>
-        <circle cx="18" cy="13" r="3" fill="#111"/>
-        <circle cx="42" cy="15" r="12" fill="#7bed9f"/>
-        <circle cx="42" cy="13" r="6" fill="#fff"/>
-        <circle cx="42" cy="13" r="3" fill="#111"/>
-        <!-- Vocal sac -->
-        <circle cx="30" cy="45" r="15" fill="#ffeaa7" opacity="0.85"/>
-        <!-- Little flower on head -->
-        <circle cx="18" cy="2" r="5" fill="#ff6b81"/>
-        <circle cx="18" cy="2" r="2" fill="#ffd32a"/>
+      <!-- Tiny moth fluttering by -->
+      <g transform="translate(130, 160)">
+        <ellipse cx="10" cy="10" rx="4" ry="7" fill="#f1c40f"/>
+        <circle cx="5" cy="6" r="6" fill="#f39c12" opacity="0.8"/>
+        <circle cx="15" cy="6" r="6" fill="#f39c12" opacity="0.8"/>
       </g>
-      <!-- Musical Notes Floating -->
-      <text x="240" y="80" font-size="28" fill="#fff">🎵</text>
-      <text x="290" y="60" font-size="36" fill="#ffd32a">🎶</text>
-      <text x="350" y="90" font-size="26" fill="#fff">✨</text>
+      <text x="145" y="150" font-size="20">👀 🦋</text>
     </svg>`,
-    badge: "Wild Acoustics",
+    badge: "Myth Busters",
     targetAges: ["little", "curious", "junior"],
     versions: {
       little: {
-        summary: "Ribbit! Scientists in a tropical rainforest discovered tree frogs that don't just croak—they sing musical notes together like a tiny choir!",
-        content: `What does a frog sound like? You probably said 'Ribbit! Ribbit!'
+        summary: "For over 80 years, science books told everyone that bats couldn't move their eyes at all. But brand-new cameras caught bats darting their eyes side-to-side to watch juicy moths fly by!",
+        content: `Close your eyes and move them left and right. You can look at your shoes, then look up at the ceiling, without even moving your head!
 
-Well, pack your ears for a musical surprise! Biologists exploring the Amazon rainforest discovered emerald tree frogs that sing true musical chords.
+For nearly a century, scientists believed bats couldn't do that. Because bats use super-hearing called echolocation to 'see' with sound waves, old books claimed their eyeballs were locked in place like statues!
 
-Instead of all croaking at the exact same time into noisy chaos, neighbor frogs listen to each other. One frog puffs out his throat bubble and sings a deep 'BOMMMM' note. Right as he finishes, his friend sings a sweet high 'PEEEEP!' 
+Well, guess what? The science books were WRONG!
 
-Together, their swamp pond sounds like a peaceful chime orchestra!`
+High-speed cameras watched fruit bats resting in caves and discovered that bats move their eyes all the time! When a moth flutters nearby, the bat tracks it with its eyes, combining super-vision with super-hearing!`
       },
       curious: {
-        summary: "Acoustic biologists have documented chorus tree frogs singing in antiphon—taking turns at precise pitches to create natural harmonic chords that carry through dense jungle leaves.",
-        content: `If you walk through the rainforest at dusk, you might think you are listening to a jazz band tuning up.
+        summary: "A breakthrough neurobiology study revealed that Seba's short-tailed bats actively coordinate eye saccades with echolocation pulses, overturning an 80-year-old biological assumption that bats have immobile eyes.",
+        content: `In science, whenever someone says 'everyone knows that's impossible,' a curious researcher usually comes along and proves everyone wrong!
 
-Bioacoustics researchers placed ultrasonic microphones around forest ponds and discovered that male tree frogs coordinate their calls using **antiphonal communication**—a fancy word for taking turns singing harmony!
+Since the 1940s, textbooks asserted that echolocating bats had fixed, immobile eyes in their skulls because sound navigation made eye movements redundant.
 
-When two frogs sit on adjacent lilypads, the second frog shifts its throat sac vibration frequency to be exactly a musical third or fifth above the first frog. 
+However, an international team of sensory biologists placed non-invasive eye-tracking cameras on fruit bats. To their astonishment, the bats demonstrated rapid, voluntary eye movements called **saccades**—moving their eyes up to 30 degrees to scan the dark!
 
-Why do they do it? Sound researchers believe harmonized chords travel farther through heavy rainforest fog without getting jumbled up, helping frogs find friends without wasting their breath!`
+Even cooler: the bats synchronized their eye darts with their high-pitched sonar chirps. This proves bats don't choose between sight and sound; they fuse both senses together like high-tech jet fighter helmets!`
       },
       junior: {
-        summary: "Bioacoustic spectrogram analysis of tropical anuran vocalizations confirms intentional harmonic interval pitch matching and phase-locked calling routines.",
-        content: `Anuran communication was long believed to consist solely of competitive acoustic jamming, where individuals attempt to overpower adjacent rivals with amplitude. 
+        summary: "Oculomotor tracking in Carollia perspicillata reveals active saccadic eye movements phase-locked with biosonar emissions, falsifying long-standing paradigms regarding chiropteran cranial ocular immobility.",
+        content: `Since initial physiological investigations in 1944, the prevailing scientific consensus maintained that microbats possessed vestigial oculomotor functionality, relying exclusively on auditory feedback for spatial navigation.
 
-However, multi-channel acoustic array recordings in cloud forest ecosystems demonstrate sophisticated cooperative signal coordination. Frogs employ phase-locked vocal intervals, staggering acoustic pulses by mere milliseconds to prevent acoustic interference.
+Recent high-speed infrared video-oculography on Seba's short-tailed bats (Carollia perspicillata) demonstrated robust horizontal and vertical saccades possessing peak angular velocities exceeding 300°/s.
 
-Furthermore, frequency spectrograms demonstrate active pitch modulation: subordinate callers adjust fundamental resonance frequencies (F0) relative to dominant callers, generating consonant frequency ratios (such as perfect fourths and fifths). This acoustic niche partitioning maximizes signal propagation efficiency across high-attenuation arboreal canopies.`
+Crucially, electrophysiological recordings revealed that ocular saccades are temporally coordinated with laryngeal echolocation pulse trains. This multi-sensory integration confirms that chiropteran target tracking utilizes active visual foveation in concert with auditory acoustic imaging, revolutionizing our comprehension of mammalian sensory ecology.`
       }
     },
-    didYouKnow: "Some species of frogs can blow up their vocal sacs until they are larger than their entire heads!",
+    didYouKnow: "Bats are the only mammals on planet Earth capable of true, powered flight! Flying squirrels don't truly fly—they only glide like parachutes.",
     wordDetective: [
-      { word: "Vocal Sac", pronunciation: "VOH-kul sak", meaning: "An elastic skin balloon under a frog's chin that amplifies their singing." },
-      { word: "Harmony", pronunciation: "HAR-muh-nee", meaning: "When different musical pitches blend together pleasingly to the ear." },
-      { word: "Bioacoustics", pronunciation: "bye-oh-uh-KOO-stiks", meaning: "The science of studying all the wild sounds animals and nature make." }
+      { word: "Echolocation", pronunciation: "ek-oh-loh-KAY-shun", meaning: "Navigating and finding hidden objects by bouncing high-pitched sound waves off them." },
+      { word: "Saccade", pronunciation: "suh-KAHD", meaning: "A super-fast, darting jump that your eyes make when tracking something in motion." },
+      { word: "Chiroptera", pronunciation: "kye-ROP-ter-uh", meaning: "The scientific mammal family name for bats, which literally means 'hand-wing'!" }
     ],
     quiz: {
-      question: "Why do these singing toads match their musical pitches?",
-      options: ["To audition for a TV talent show", "So their songs travel clearly through thick jungle air without getting jumbled", "To put baby toads to sleep", "Because they forgot the words"],
+      question: "What did new cameras discover about bat eyes that surprised scientists?",
+      options: ["Bats glow in the dark", "Bats actually can move their eyes to track bugs, proving old books wrong!", "Bats have four eyes", "Bats close their eyes when flying backwards"],
       correctIndex: 1,
-      explanation: "Harmonizing pitches allows their sound waves to travel smoothly through the humid forest without drowning each other out!"
+      explanation: "For over 80 years, scientists thought bat eyes were locked in place, but modern cameras proved bats actively dart and move their eyes to track food!"
     },
-    reactions: { thumbsUp: 65, heart: 110, wow: 49, laugh: 42 }
+    reactions: { thumbsUp: 76, heart: 122, wow: 164, laugh: 58 }
   }
 ];
 
-// Daily Wonder Poll
+// Daily Wonder Poll - Fresh interactive question!
 const DAILY_POLL = {
-  id: "poll-2026",
-  question: "If you could blast off in a spaceship right now, where would you go first?",
+  id: "poll-latest-2026",
+  question: "If you could invent any nature-inspired robot, which superpower would you give it?",
   options: [
-    { id: "moon", label: "🌕 The Secret Moon Caves", votes: 142 },
-    { id: "mars", label: "🪐 Mars to build red sandcastles", votes: 215 },
-    { id: "saturn", label: "🛸 Saturn's sparkly ice rings", votes: 310 },
-    { id: "alien", label: "👽 Hunt for friendly aliens beyond Pluto", votes: 189 }
+    { id: "puffin", label: "🤿 Fly through storm clouds & dive underwater like a Robo-Puffin", emoji: "🤿", votes: 198 },
+    { id: "octopus", label: "🐙 Change into invisible camouflage colors like an Octopus", emoji: "🐙", votes: 245 },
+    { id: "calculator", label: "🧠 Solve 100 math problems in 30 seconds like Aaryan", emoji: "🧠", votes: 162 },
+    { id: "bat", label: "🦇 Fly silently in pitch black caves with sonar radar", emoji: "🦇", votes: 210 }
   ]
 };
 
-// Daily Brain Teaser / Riddle
+// Daily Brain Teaser / Riddle - Fresh Riddle!
 const DAILY_RIDDLE = {
-  riddle: "I have rivers without water, forests without trees, and cities without people. What am I?",
-  hint: "You might find me folded up in a pirate's treasure chest or on your classroom wall!",
-  answer: "A Map! 🗺️"
+  riddle: "I have no wings, but I can fly across the sky. I have no eyes, but I can cry tears of rain. When I cover the sun, twilight falls. What am I?",
+  hint: "NASA's Curiosity rover just photographed glowing ones on Mars!",
+  answer: "A Cloud! ☁️"
 };
 
-// Mascot Tips & Friendly Greetings
+// Mascot Tips & Friendly Greetings - Fresh curiosity sparks!
 const MASCOT_MESSAGES = [
-  "Hi Explorer! I'm Barnaby Bear! Click 'Read Aloud' anytime you want me to read with you! 🐻",
-  "Did you know reading just 10 minutes a day makes your brain sparkle with new ideas? ✨",
-  "Check out the Word Detective tooltips to discover secret superpower words! 🔍",
-  "Try the Bedtime Mode at night for sweet dreams under the stars! 🌙"
+  "Hi Explorer! I'm Barnaby Bear! Check out the sunset clouds on Mars—they glow like rainbow pearls! 🪐",
+  "Did you know octopuses have sweet dreams and change colors while sleeping? 🐙",
+  "Robots can now fly like puffins and dive into coral reefs! The future is wild! 🤖",
+  "You can train your brain just like an Olympic athlete trains their muscles! 🧠",
+  "Scientists discovered bats can move their eyes—proving there's always something new to learn! 🦇",
+  "Try Bedtime Mode at night for sweet dreams under the twinkling stars! 🌙"
 ];

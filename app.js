@@ -15,11 +15,15 @@
     activeArticle: null,
     pollVoted: localStorage.getItem('wondersparks_poll_voted') || null,
     pollData: JSON.parse(JSON.stringify(DAILY_POLL)),
-    reactions: JSON.parse(localStorage.getItem('wondersparks_reactions') || '{}')
+    reactions: JSON.parse(localStorage.getItem('wondersparks_reactions') || '{}'),
+    starPoints: parseInt(localStorage.getItem('wondersparks_stars') || '100', 10),
+    unlockedBadges: JSON.parse(localStorage.getItem('wondersparks_unlocked_badges') || '{"space_cadet": true}'),
+    fontSizeMode: localStorage.getItem('wondersparks_font_size') || 'normal' // normal, large, xlarge
   };
 
   // --- DOM ELEMENTS ---
   const articlesGrid = document.getElementById('articlesGrid');
+  const featuredStoryHero = document.getElementById('featuredStoryHero');
   const noResultsState = document.getElementById('noResultsState');
   const clearSearchBtn = document.getElementById('clearSearchBtn');
   const agePills = document.querySelectorAll('.age-pill');
@@ -37,6 +41,12 @@
   const mascotMessageText = document.getElementById('mascotMessageText');
   const newMascotTipBtn = document.getElementById('newMascotTipBtn');
   const brandHomeBtn = document.getElementById('brandHomeBtn');
+  const starPointsDisplay = document.getElementById('starPointsDisplay');
+  const starPointsBtn = document.getElementById('starPointsBtn');
+  const badgesDrawerBtn = document.getElementById('badgesDrawerBtn');
+  const badgeCounterPill = document.getElementById('badgeCounterPill');
+  const fontSizeToggleBtn = document.getElementById('fontSizeToggleBtn');
+  const pronounceWordBtn = document.getElementById('pronounceWordBtn');
 
   // Sidebar elements
   const pollQuestionText = document.getElementById('pollQuestionText');
@@ -45,7 +55,7 @@
   const riddleAnswerBox = document.getElementById('riddleAnswerBox');
   const submitNewsTipBtn = document.getElementById('submitNewsTipBtn');
 
-  // Modal elements
+  // Article Modal elements
   const articleModalBackdrop = document.getElementById('articleModalBackdrop');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
   const modalHero = document.getElementById('modalHero');
@@ -69,6 +79,11 @@
   const printArticleBtn = document.getElementById('printArticleBtn');
   const reactionBtns = document.querySelectorAll('.reaction-btn');
 
+  // Badges Modal elements
+  const badgesModalBackdrop = document.getElementById('badgesModalBackdrop');
+  const badgesModalCloseBtn = document.getElementById('badgesModalCloseBtn');
+  const badgesGridContainer = document.getElementById('badgesGridContainer');
+
   // Confetti Canvas
   const canvas = document.getElementById('confettiCanvas');
   const ctx = canvas ? canvas.getContext('2d') : null;
@@ -79,9 +94,13 @@
   function init() {
     setupCanvas();
     updateThemeUI();
+    updateFontScaleUI();
     updateChestCount();
+    updateStarPointsUI();
+    updateBadgesUI();
     renderAgePillState();
     renderPoll();
+    renderFeaturedHero();
     renderArticles();
     setupEventListeners();
 
@@ -90,7 +109,67 @@
       window.speechReader.onStateChange = (status) => {
         updateSpeechControls(status);
       };
+      window.speechReader.onBoundary = (charIndex, charLength) => {
+        highlightReadingWord(charIndex, charLength);
+      };
     }
+  }
+
+  // --- GAMIFICATION: STARS & BADGES ---
+  function addStarPoints(points, reason) {
+    state.starPoints += points;
+    localStorage.setItem('wondersparks_stars', state.starPoints);
+    updateStarPointsUI();
+    if (window.soundFx) window.soundFx.playChime();
+    
+    // Animate star button bounce
+    if (starPointsBtn) {
+      starPointsBtn.style.transform = 'scale(1.2) rotate(10deg)';
+      setTimeout(() => { starPointsBtn.style.transform = ''; }, 300);
+    }
+  }
+
+  function updateStarPointsUI() {
+    if (starPointsDisplay) {
+      starPointsDisplay.textContent = state.starPoints;
+    }
+  }
+
+  function unlockBadge(badgeId) {
+    if (!state.unlockedBadges[badgeId]) {
+      state.unlockedBadges[badgeId] = true;
+      localStorage.setItem('wondersparks_unlocked_badges', JSON.stringify(state.unlockedBadges));
+      updateBadgesUI();
+      if (window.soundFx) window.soundFx.playFanfare();
+      launchConfetti();
+      
+      const badge = EXPLORER_BADGES.find(b => b.id === badgeId);
+      if (badge) {
+        mascotMessageText.innerHTML = `🎉 <strong>Badge Unlocked!</strong> You earned the <strong>${badge.name} ${badge.emoji}</strong> badge!`;
+      }
+    }
+  }
+
+  function updateBadgesUI() {
+    const unlockedCount = Object.keys(state.unlockedBadges).filter(k => state.unlockedBadges[k]).length;
+    if (badgeCounterPill) {
+      badgeCounterPill.textContent = `${unlockedCount}/${EXPLORER_BADGES.length}`;
+    }
+  }
+
+  function renderBadgesModal() {
+    if (!badgesGridContainer) return;
+    badgesGridContainer.innerHTML = EXPLORER_BADGES.map(b => {
+      const isUnlocked = !!state.unlockedBadges[b.id];
+      return `
+        <div class="badge-card ${isUnlocked ? 'unlocked' : ''}">
+          <div class="badge-icon">${b.emoji}</div>
+          <div class="badge-name">${b.name}</div>
+          <div class="badge-desc">${b.desc}</div>
+          <div class="badge-status">${isUnlocked ? '✨ Earned!' : '🔒 Locked'}</div>
+        </div>
+      `;
+    }).join('');
   }
 
   // --- CONFETTI SYSTEM ---
@@ -107,17 +186,17 @@
   function launchConfetti() {
     if (!canvas || !ctx) return;
     confettiParticles = [];
-    const colors = ['#ffd32a', '#ff6b6b', '#2ed573', '#339af0', '#a55eea', '#ff9f43'];
-    for (let i = 0; i < 90; i++) {
+    const colors = ['#ffd32a', '#ff5e57', '#10ac84', '#2e86de', '#a55eea', '#ff9f43'];
+    for (let i = 0; i < 110; i++) {
       confettiParticles.push({
-        x: canvas.width / 2 + (Math.random() * 200 - 100),
+        x: canvas.width / 2 + (Math.random() * 240 - 120),
         y: canvas.height * 0.45,
         r: Math.random() * 6 + 4,
         color: colors[Math.floor(Math.random() * colors.length)],
         tilt: Math.random() * 10 - 5,
-        dx: (Math.random() - 0.5) * 12,
-        dy: Math.random() * -14 - 4,
-        gravity: 0.35,
+        dx: (Math.random() - 0.5) * 14,
+        dy: Math.random() * -16 - 5,
+        gravity: 0.38,
         alpha: 1,
         decay: Math.random() * 0.015 + 0.008
       });
@@ -154,17 +233,43 @@
     }
   }
 
-  // --- THEME & SOUND ---
+  // --- THEME & ACCESSIBILITY ---
   function updateThemeUI() {
     if (state.bedtimeMode) {
       document.body.classList.add('bedtime-mode');
       bedtimeToggleBtn.classList.add('active');
       bedtimeToggleBtn.innerHTML = '<span>☀️</span> Sunny Mode';
+      unlockBadge('night_owl');
     } else {
       document.body.classList.remove('bedtime-mode');
       bedtimeToggleBtn.classList.remove('active');
       bedtimeToggleBtn.innerHTML = '<span>🌙</span> Bedtime Mode';
     }
+  }
+
+  function updateFontScaleUI() {
+    document.body.classList.remove('large-text-mode', 'xlarge-text-mode');
+    if (state.fontSizeMode === 'large') {
+      document.body.classList.add('large-text-mode');
+      fontSizeToggleBtn.innerHTML = '<span style="font-weight: 800;">A++</span> Text Size';
+    } else if (state.fontSizeMode === 'xlarge') {
+      document.body.classList.add('xlarge-text-mode');
+      fontSizeToggleBtn.innerHTML = '<span style="font-weight: 800;">A (Reset)</span> Text Size';
+    } else {
+      fontSizeToggleBtn.innerHTML = '<span style="font-weight: 800;">A+</span> Text Size';
+    }
+  }
+
+  function cycleFontSize() {
+    if (state.fontSizeMode === 'normal') {
+      state.fontSizeMode = 'large';
+    } else if (state.fontSizeMode === 'large') {
+      state.fontSizeMode = 'xlarge';
+    } else {
+      state.fontSizeMode = 'normal';
+    }
+    localStorage.setItem('wondersparks_font_size', state.fontSizeMode);
+    updateFontScaleUI();
   }
 
   function updateChestCount() {
@@ -189,6 +294,51 @@
     return '🦊 Curious Kids Edition (Ages 9–11)';
   }
 
+  // --- STORY OF THE DAY HERO SHOWCASE ---
+  function renderFeaturedHero() {
+    if (!featuredStoryHero) return;
+    const featured = NEWS_ARTICLES.find(a => a.isFeatured) || NEWS_ARTICLES[0];
+    if (!featured) return;
+
+    const ver = featured.versions[state.ageLevel] || featured.versions['curious'];
+
+    featuredStoryHero.innerHTML = `
+      <div class="featured-hero-visual">
+        ${featured.heroImage}
+        <div class="featured-hero-badge">
+          <span>🌟</span> BIG STORY OF THE DAY
+        </div>
+      </div>
+      <div class="featured-hero-info">
+        <div class="featured-meta-row">
+          <span class="featured-category-tag">${featured.categoryEmoji} ${featured.categoryLabel}</span>
+          <span>•</span>
+          <span class="featured-difficulty-stars">${featured.difficultyLabel}</span>
+          <span>•</span>
+          <span>${featured.readTime}</span>
+        </div>
+        <h2 class="featured-title" data-id="${featured.id}">${featured.title}</h2>
+        <p class="featured-summary">${ver.summary}</p>
+        <div class="featured-actions">
+          <button class="featured-read-btn" data-id="${featured.id}">
+            <span>📖</span> Start Reading
+          </button>
+          <button class="featured-listen-btn ${window.speechReader && window.speechReader.isPlaying && window.speechReader.currentArticleId === featured.id ? 'playing' : ''}" data-id="${featured.id}">
+            <span>🎧</span> Listen Story (${featured.audioTime})
+            <div class="audio-wave-bars">
+              <span></span><span></span><span></span>
+            </div>
+          </button>
+        </div>
+      </div>
+    `;
+
+    // Click handlers for Hero
+    featuredStoryHero.querySelector('.featured-title').addEventListener('click', () => openArticleModal(featured.id));
+    featuredStoryHero.querySelector('.featured-read-btn').addEventListener('click', () => openArticleModal(featured.id));
+    featuredStoryHero.querySelector('.featured-listen-btn').addEventListener('click', () => playArticleSpeech(featured.id));
+  }
+
   // --- ARTICLES RENDERING ---
   function getFilteredArticles() {
     return NEWS_ARTICLES.filter(art => {
@@ -200,7 +350,7 @@
       if (state.category !== 'all' && art.category !== state.category) {
         return false;
       }
-      // Positive only filter (all WonderSparks stories are positive, but let's highlight feel-goods)
+      // Positive only filter
       if (state.positiveOnly && !['animals', 'earth', 'tech', 'wacky'].includes(art.category)) {
         return false;
       }
@@ -236,6 +386,7 @@
     articlesGrid.innerHTML = list.map(art => {
       const isSaved = state.bookmarks.includes(art.id);
       const ver = art.versions[state.ageLevel] || art.versions['curious'];
+      const artReactions = state.reactions[art.id] || {};
 
       return `
         <article class="article-card" data-id="${art.id}">
@@ -256,12 +407,25 @@
           <div class="card-content">
             <div class="card-meta">
               <span class="card-category">${art.categoryLabel}</span>
-              <span>${art.readTime}</span>
+              <span class="card-difficulty">${art.difficultyLabel}</span>
             </div>
             
             <h3 class="card-title" data-id="${art.id}">${art.title}</h3>
             
             <p class="card-summary">${ver.summary}</p>
+
+            <!-- Quick Micro Reactions directly on Card -->
+            <div class="card-micro-reactions">
+              <button class="card-react-btn" data-id="${art.id}" data-type="thumbsUp">
+                👍 <span>${(art.reactions.thumbsUp || 0) + (artReactions.thumbsUp ? 1 : 0)}</span>
+              </button>
+              <button class="card-react-btn" data-id="${art.id}" data-type="heart">
+                ❤️ <span>${(art.reactions.heart || 0) + (artReactions.heart ? 1 : 0)}</span>
+              </button>
+              <button class="card-react-btn" data-id="${art.id}" data-type="wow">
+                😮 <span>${(art.reactions.wow || 0) + (artReactions.wow ? 1 : 0)}</span>
+              </button>
+            </div>
 
             <div class="card-footer">
               <button class="read-btn" data-id="${art.id}">
@@ -271,7 +435,7 @@
               <button class="audio-listen-btn ${window.speechReader && window.speechReader.isPlaying && window.speechReader.currentArticleId === art.id ? 'playing' : ''}"
                       data-id="${art.id}"
                       title="Listen aloud">
-                🔊
+                <span>🔊</span> ${art.audioTime || '1:30'}
               </button>
             </div>
           </div>
@@ -279,7 +443,7 @@
       `;
     }).join('');
 
-    // Attach article card click listeners
+    // Attach card listeners
     articlesGrid.querySelectorAll('.card-title, .read-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const id = e.currentTarget.dataset.id;
@@ -302,6 +466,25 @@
         playArticleSpeech(id);
       });
     });
+
+    // In-card reaction clicks
+    articlesGrid.querySelectorAll('.card-react-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.id;
+        const type = btn.dataset.type;
+        toggleCardReaction(id, type);
+      });
+    });
+  }
+
+  function toggleCardReaction(articleId, type) {
+    if (window.soundFx) window.soundFx.playPop();
+    if (!state.reactions[articleId]) state.reactions[articleId] = {};
+    state.reactions[articleId][type] = !state.reactions[articleId][type];
+    localStorage.setItem('wondersparks_reactions', JSON.stringify(state.reactions));
+    addStarPoints(5, "Reacted to story");
+    renderArticles();
   }
 
   // --- BOOKMARK HANDLING ---
@@ -312,6 +495,7 @@
       state.bookmarks.splice(idx, 1);
     } else {
       state.bookmarks.push(articleId);
+      addStarPoints(10, "Saved story to Treasure Chest");
     }
     localStorage.setItem('wondersparks_bookmarks', JSON.stringify(state.bookmarks));
     updateChestCount();
@@ -326,6 +510,15 @@
 
     state.activeArticle = article;
     const ver = article.versions[state.ageLevel] || article.versions['curious'];
+
+    // Reward reading activity
+    addStarPoints(10, "Opened story to read");
+    if (article.category === 'space') unlockBadge('space_cadet');
+    if (article.category === 'animals') unlockBadge('wildlife_scout');
+    if (article.category === 'tech') unlockBadge('tech_titan');
+    if (article.category === 'earth') unlockBadge('dino_digger');
+    if (article.category === 'sports') unlockBadge('sports_champ');
+    if (article.category === 'wacky') unlockBadge('wacky_whiz');
 
     // Fill content
     modalHero.innerHTML = article.heroImage;
@@ -354,6 +547,16 @@
       modalWordDetectiveSection.style.display = 'none';
     }
 
+    // Attach listeners to clickable word detective terms inside text
+    modalArticleText.querySelectorAll('.word-detective-term').forEach(termEl => {
+      termEl.addEventListener('click', () => {
+        if (window.soundFx) window.soundFx.playChime();
+        unlockBadge('word_detective');
+        addStarPoints(15, "Inspected tricky word");
+        alert(`🔍 Word Detective: "${termEl.textContent}"\n${termEl.getAttribute('title')}`);
+      });
+    });
+
     // Mini Quiz
     if (article.quiz) {
       modalQuizSection.style.display = 'block';
@@ -363,7 +566,6 @@
         <button class="quiz-option-btn" data-index="${i}">${opt}</button>
       `).join('');
 
-      // Quiz option clicks
       modalQuizOptionsList.querySelectorAll('.quiz-option-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           handleQuizAnswer(article.quiz, parseInt(btn.dataset.index, 10));
@@ -415,10 +617,12 @@
       btns[selectedIndex].classList.add('correct');
       if (window.soundFx) window.soundFx.playSuccess();
       launchConfetti();
+      addStarPoints(25, "Quiz completed successfully");
+      unlockBadge('quiz_whiz');
       modalQuizFeedback.style.display = 'block';
       modalQuizFeedback.style.background = '#d3f9d8';
       modalQuizFeedback.style.color = '#2b8a3e';
-      modalQuizFeedback.innerHTML = `🎉 <strong>Woohoo! Super Smart!</strong> ${quiz.explanation}`;
+      modalQuizFeedback.innerHTML = `🎉 <strong>Woohoo! Super Smart! (+25 Stars)</strong> ${quiz.explanation}`;
     } else {
       btns[selectedIndex].classList.add('incorrect');
       btns[quiz.correctIndex].classList.add('correct');
@@ -442,6 +646,7 @@
     if (window.speechReader.isPlaying && window.speechReader.currentArticleId === articleId) {
       window.speechReader.stop();
     } else {
+      addStarPoints(10, "Listened along to story");
       window.speechReader.speak(articleId, speechText);
     }
   }
@@ -452,12 +657,26 @@
     articlesGrid.querySelectorAll('.audio-listen-btn').forEach(btn => {
       if (status.isPlaying && btn.dataset.id === status.articleId) {
         btn.classList.add('playing');
-        btn.innerHTML = '⏸️';
+        btn.innerHTML = '<span>⏸️</span> Pause';
       } else {
         btn.classList.remove('playing');
-        btn.innerHTML = '🔊';
+        btn.innerHTML = '<span>🔊</span> Listen';
       }
     });
+
+    // Update hero button
+    if (featuredStoryHero) {
+      const heroBtn = featuredStoryHero.querySelector('.featured-listen-btn');
+      if (heroBtn) {
+        if (status.isPlaying && heroBtn.dataset.id === status.articleId) {
+          heroBtn.classList.add('playing');
+          heroBtn.innerHTML = '<span>⏸️</span> Pause Audio';
+        } else {
+          heroBtn.classList.remove('playing');
+          heroBtn.innerHTML = '<span>🎧</span> Listen Story';
+        }
+      }
+    }
   }
 
   function updateModalSpeechUI() {
@@ -473,6 +692,11 @@
       speechPlayIcon.textContent = '🔊';
       speechPlayLabel.textContent = 'Read Story Aloud';
     }
+  }
+
+  function highlightReadingWord(charIndex, charLength) {
+    // Follow-along reading indicator
+    if (!state.activeArticle) return;
   }
 
   // --- REACTIONS ---
@@ -505,7 +729,9 @@
 
     state.reactions[id][type] = !state.reactions[id][type];
     localStorage.setItem('wondersparks_reactions', JSON.stringify(state.reactions));
+    addStarPoints(5, "Reacted to story");
     updateReactionsDisplay(id);
+    renderArticles();
   }
 
   // --- DAILY POLL ---
@@ -544,6 +770,8 @@
       opt.votes += 1;
       state.pollVoted = optionId;
       localStorage.setItem('wondersparks_poll_voted', optionId);
+      addStarPoints(15, "Voted in daily poll");
+      unlockBadge('poll_voter');
       launchConfetti();
       renderPoll();
     }
@@ -565,6 +793,55 @@
       localStorage.setItem('wondersparks_bedtime', state.bedtimeMode);
       if (window.soundFx) window.soundFx.playChime();
       updateThemeUI();
+    });
+
+    // Font size toggle
+    fontSizeToggleBtn.addEventListener('click', () => {
+      if (window.soundFx) window.soundFx.playPop();
+      cycleFontSize();
+    });
+
+    // Star Points display click
+    starPointsBtn.addEventListener('click', () => {
+      if (window.soundFx) window.soundFx.playChime();
+      alert(`⭐ You have ${state.starPoints} Explorer Stars!\nKeep reading stories, solving quizzes, and discovering words to collect more!`);
+    });
+
+    // Badges Modal open / close
+    badgesDrawerBtn.addEventListener('click', () => {
+      if (window.soundFx) window.soundFx.playPop();
+      renderBadgesModal();
+      badgesModalBackdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+    badgesModalCloseBtn.addEventListener('click', () => {
+      if (window.soundFx) window.soundFx.playPop();
+      badgesModalBackdrop.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+    badgesModalBackdrop.addEventListener('click', (e) => {
+      if (e.target === badgesModalBackdrop) {
+        badgesModalBackdrop.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Word of the day speech pronounce
+    if (pronounceWordBtn) {
+      pronounceWordBtn.addEventListener('click', () => {
+        if (window.soundFx) window.soundFx.playPop();
+        if (window.speechReader) {
+          window.speechReader.speak("word_of_day", "Noctilucent. Pronounced nok-tih-LOO-sent. Shining or glowing brightly in the dark night sky.");
+        }
+      });
+    }
+
+    // Ticker item clicks
+    document.querySelectorAll('.ticker-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const id = item.dataset.id;
+        openArticleModal(id);
+      });
     });
 
     // Treasure chest toggle
@@ -605,6 +882,7 @@
     function cycleMascotTip() {
       const rand = MASCOT_MESSAGES[Math.floor(Math.random() * MASCOT_MESSAGES.length)];
       mascotMessageText.textContent = rand;
+      addStarPoints(2, "Curious mascot tip");
     }
 
     // Age group selector
@@ -614,6 +892,7 @@
         state.ageLevel = pill.dataset.level;
         localStorage.setItem('wondersparks_age', state.ageLevel);
         renderAgePillState();
+        renderFeaturedHero();
         renderArticles();
         if (state.activeArticle) {
           openArticleModal(state.activeArticle.id);
@@ -666,6 +945,7 @@
     revealRiddleBtn.addEventListener('click', () => {
       if (window.soundFx) window.soundFx.playSuccess();
       launchConfetti();
+      addStarPoints(15, "Solved daily riddle");
       riddleAnswerBox.style.display = 'block';
       revealRiddleBtn.style.display = 'none';
     });
@@ -677,7 +957,8 @@
       if (tip) {
         if (window.soundFx) window.soundFx.playSuccess();
         launchConfetti();
-        alert("🎉 Thanks, Star Reporter! Barnaby put your tip in his explorer notebook!");
+        addStarPoints(20, "Submitted news tip");
+        alert("🎉 Thanks, Star Reporter! Barnaby put your tip in his explorer notebook and awarded you +20 Stars!");
       }
     });
 
@@ -689,8 +970,12 @@
 
     // Keyboard ESC to close modal
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && articleModalBackdrop.classList.contains('open')) {
-        closeArticleModal();
+      if (e.key === 'Escape') {
+        if (articleModalBackdrop.classList.contains('open')) closeArticleModal();
+        if (badgesModalBackdrop.classList.contains('open')) {
+          badgesModalBackdrop.classList.remove('open');
+          document.body.style.overflow = '';
+        }
       }
     });
 

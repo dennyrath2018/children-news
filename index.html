@@ -6,29 +6,51 @@
   <title>WonderSparks News 🚀 | The Fun & Friendly News Explorer for Kids</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Background Animated Doodles (Clouds & Stars) -->
+  <!-- Top Good News Express Ticker -->
+  <aside class="good-news-ticker" aria-label="Good News Express Ticker">
+    <div class="ticker-badge">
+      <span>🚂</span> Good News Express
+    </div>
+    <div class="ticker-track">
+      <div class="ticker-content" id="tickerContent">
+        <span class="ticker-item" data-id="space-mars-sunset-clouds">🪐 NASA rover captures glowing twilight sunset clouds on Mars!</span>
+        <span class="ticker-dot">•</span>
+        <span class="ticker-item" data-id="animals-octopus-dreaming">🐙 Sleeping octopuses change colors when dreaming about ocean hunts!</span>
+        <span class="ticker-dot">•</span>
+        <span class="ticker-item" data-id="tech-robo-seabird">🤖 Engineers build robo-puffin that flies in air & dives deep underwater!</span>
+        <span class="ticker-dot">•</span>
+        <span class="ticker-item" data-id="earth-dino-mummy-skin">🦖 66-million-year-old 'dino mummy' found with real preserved skin!</span>
+        <span class="ticker-dot">•</span>
+        <span class="ticker-item" data-id="sports-math-world-record">🏆 15-year-old mental calculator adds 100 numbers in 30 seconds!</span>
+        <span class="ticker-dot">•</span>
+        <span class="ticker-item" data-id="wacky-bats-move-eyes">🦇 Scientists discover bats actively move their eyes, breaking 80-year myth!</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Background Animated Clouds & Stars -->
   <div class="background-doodles" aria-hidden="true">
-    <svg class="doodle-cloud" style="top: 8%; left: 4%; width: 120px;" viewBox="0 0 100 60">
+    <svg class="doodle-cloud" style="top: 8%; left: 3%; width: 130px;" viewBox="0 0 100 60">
       <path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q80,40 70,40 Z"/>
     </svg>
-    <svg class="doodle-cloud" style="top: 18%; right: 6%; width: 140px;" viewBox="0 0 100 60">
+    <svg class="doodle-cloud" style="top: 20%; right: 4%; width: 150px;" viewBox="0 0 100 60">
       <path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q80,40 70,40 Z"/>
     </svg>
     <svg class="doodle-cloud" style="top: 65%; left: 2%; width: 160px;" viewBox="0 0 100 60">
       <path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q80,40 70,40 Z"/>
     </svg>
     
-    <!-- Twinkling stars for bedtime mode -->
-    <div class="doodle-star" style="top: 10%; left: 20%; font-size: 20px;">⭐</div>
-    <div class="doodle-star" style="top: 15%; right: 25%; font-size: 24px; animation-delay: 0.7s;">✨</div>
-    <div class="doodle-star" style="top: 40%; left: 8%; font-size: 18px; animation-delay: 1.4s;">🌟</div>
-    <div class="doodle-star" style="top: 55%; right: 12%; font-size: 22px; animation-delay: 0.3s;">⭐</div>
-    <div class="doodle-star" style="top: 80%; left: 30%; font-size: 20px; animation-delay: 1.8s;">✨</div>
+    <!-- Bedtime mode glowing stars -->
+    <div class="doodle-star" style="top: 12%; left: 18%; font-size: 22px;">⭐</div>
+    <div class="doodle-star" style="top: 16%; right: 22%; font-size: 26px; animation-delay: 0.7s;">✨</div>
+    <div class="doodle-star" style="top: 42%; left: 7%; font-size: 20px; animation-delay: 1.4s;">🌟</div>
+    <div class="doodle-star" style="top: 58%; right: 10%; font-size: 24px; animation-delay: 0.3s;">⭐</div>
+    <div class="doodle-star" style="top: 82%; left: 28%; font-size: 22px; animation-delay: 1.8s;">✨</div>
   </div>
 
   <div class="app-container">
@@ -42,31 +64,53 @@
           </div>
           <div class="brand-text">
             <h1>WonderSparks <span>News</span></h1>
-            <div class="brand-tagline">Curious Stories & Big Discoveries for Smart Kids!</div>
+            <div class="brand-tagline-row">
+              <span>Curious Stories for Smart Kids!</span>
+              <span class="daily-sparkle-pill">☀️ 100% Curiosity</span>
+            </div>
           </div>
         </a>
 
         <div class="top-controls">
-          <button class="control-btn" id="soundToggleBtn" title="Turn joyful sounds on or off">
+          <!-- Star Points Counter -->
+          <button class="control-pill" id="starPointsBtn" title="Your Star Points! Read and play to earn more.">
+            <span>⭐</span> <strong id="starPointsDisplay">100</strong> <small>Stars</small>
+          </button>
+
+          <!-- Badges / Trophy Case -->
+          <button class="control-pill" id="badgesDrawerBtn" title="View your Explorer Badges!">
+            <span>🏆</span> Badges <span class="badge-pill-counter" id="badgeCounterPill">0/8</span>
+          </button>
+
+          <!-- Font Size Adjuster -->
+          <button class="control-pill" id="fontSizeToggleBtn" title="Make reading text bigger or smaller">
+            <span style="font-weight: 800; font-size: 15px;">A+</span> Text Size
+          </button>
+
+          <!-- Sound FX Toggle -->
+          <button class="control-pill" id="soundToggleBtn" title="Turn joyful sounds on or off">
             <span id="soundIcon">🔊</span> Sound: <span id="soundLabel">ON</span>
           </button>
           
-          <button class="control-btn" id="bedtimeToggleBtn" title="Switch to starry bedtime reading theme">
+          <!-- Bedtime Starry Theme -->
+          <button class="control-pill" id="bedtimeToggleBtn" title="Switch to starry bedtime reading theme">
             <span>🌙</span> Bedtime Mode
           </button>
 
-          <button class="control-btn" id="treasureChestBtn" title="View your saved starred stories">
-            <span>⭐</span> Treasure Chest <span class="chest-count" id="chestCount">0</span>
+          <!-- Saved Bookmarks -->
+          <button class="control-pill" id="treasureChestBtn" title="View your saved starred stories">
+            <span>🌟</span> Treasure Chest <span class="badge-pill-counter" id="chestCount">0</span>
           </button>
         </div>
       </div>
 
-      <!-- Age Group / Reading Level Selector -->
+      <!-- Age Group / Reading Adventure Bar -->
       <div class="age-selector-container">
         <div class="age-label-group">
           <span class="age-label-icon">🎯</span>
           <div>
-            <span class="age-label-text">Choose Your Reading Adventure:</span>
+            <div class="age-label-title">Choose Your Reading Adventure:</div>
+            <div class="age-label-sub">Stories adapt words and science depth automatically!</div>
           </div>
         </div>
 
@@ -83,7 +127,7 @@
         </div>
       </div>
 
-      <!-- Barnaby Mascot Bubble -->
+      <!-- Mascot Speech Bubble -->
       <div class="mascot-banner">
         <div class="mascot-speech">
           <span class="mascot-speech-icon">🐻</span>
@@ -92,8 +136,13 @@
           </span>
         </div>
         <div class="mascot-actions">
-          <button class="mini-pill-btn" id="newMascotTipBtn">💡 Wonder Tip</button>
+          <button class="mini-pill-btn" id="newMascotTipBtn">💡 Wonder Spark</button>
         </div>
+      </div>
+
+      <!-- Story of the Day Hero Showcase Banner -->
+      <div class="featured-story-hero" id="featuredStoryHero">
+        <!-- Rendered dynamically via JS -->
       </div>
 
       <!-- Category Filter Tabs -->
@@ -150,10 +199,10 @@
 
         <!-- Empty state if search finds nothing -->
         <div id="noResultsState" style="display: none; text-align: center; padding: 60px 20px;">
-          <div style="font-size: 54px; margin-bottom: 12px;">🔭</div>
+          <div style="font-size: 56px; margin-bottom: 12px;">🔭</div>
           <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 8px;">No Stories Found Yet!</h3>
           <p style="color: var(--text-muted); margin-bottom: 16px;">Try searching for something else like "space", "robot", or "panda".</p>
-          <button class="control-btn" id="clearSearchBtn">Show All Stories</button>
+          <button class="control-pill" id="clearSearchBtn">Show All Stories</button>
         </div>
       </section>
 
@@ -164,7 +213,7 @@
         <div class="side-widget" id="pollWidget">
           <div class="widget-header">
             <h3 class="widget-title"><span>📊</span> Kids' Daily Poll</h3>
-            <span style="font-size: 12px; font-weight: 700; color: #228be6;">Live Votes</span>
+            <span style="font-size: 12px; font-weight: 800; color: #2e86de;">Live Votes</span>
           </div>
           <p class="poll-question" id="pollQuestionText">Loading question...</p>
           <div class="poll-options" id="pollOptionsContainer">
@@ -178,14 +227,14 @@
             <h3 class="widget-title"><span>🧩</span> Brain Riddle of the Day</h3>
           </div>
           <div class="riddle-box" id="riddleQuestionText">
-            "I have rivers without water, forests without trees, and cities without people. What am I?"
+            "I have no wings, but I can fly across the sky. I have no eyes, but I can cry tears of rain. When I cover the sun, twilight falls. What am I?"
           </div>
           <div class="riddle-hint" id="riddleHintText">
-            Hint: You might find me folded in a pirate's treasure chest!
+            Hint: NASA's Curiosity rover just photographed glowing ones on Mars!
           </div>
           <button class="riddle-reveal-btn" id="revealRiddleBtn">✨ Tap to Reveal Answer</button>
           <div class="riddle-answer" id="riddleAnswerBox">
-            A Map! 🗺️
+            A Cloud! ☁️
           </div>
         </div>
 
@@ -194,11 +243,14 @@
           <div class="widget-header">
             <h3 class="widget-title"><span>🔍</span> Superpower Word</h3>
           </div>
-          <div style="background: var(--bg-secondary); border-radius: var(--border-radius-button); padding: 16px;">
-            <div style="font-size: 18px; font-weight: 800; color: #e67700; margin-bottom: 4px;">Exoplanet</div>
-            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Pronounced: <em>EK-soh-plan-it</em></div>
-            <p style="font-size: 14px; line-height: 1.4;">
-              A mysterious planet that orbits a completely different star outside our own Solar System!
+          <div style="background: var(--bg-secondary); border-radius: var(--border-radius-button); padding: 18px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <div style="font-size: 19px; font-weight: 800; color: #e67700;">Noctilucent</div>
+              <button id="pronounceWordBtn" style="border: none; background: #ffe066; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 15px;" title="Listen to pronunciation">🔊</button>
+            </div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Pronounced: <em>nok-tih-LOO-sent</em></div>
+            <p style="font-size: 14px; line-height: 1.45;">
+              Glowing brightly in the night sky after the sun has set, like the dry ice clouds photographed on Mars!
             </p>
           </div>
         </div>
@@ -208,10 +260,10 @@
           <div class="widget-header">
             <h3 class="widget-title" style="color: #1971c2;"><span>💌</span> Junior Reporter Club</h3>
           </div>
-          <p style="font-size: 14px; color: #1864ab; margin-bottom: 14px; line-height: 1.4;">
-            Did something awesome happen at your school or hometown? Have a curious science question?
+          <p style="font-size: 14px; color: #1864ab; margin-bottom: 14px; line-height: 1.45;">
+            Did something awesome happen at your school? Have a wild question for Barnaby the Bear?
           </p>
-          <button class="control-btn" id="submitNewsTipBtn" style="width: 100%; justify-content: center; background: #228be6; color: #fff;">
+          <button class="control-pill" id="submitNewsTipBtn" style="width: 100%; justify-content: center; background: #2e86de; color: #fff;">
             ✏️ Send a News Tip to Barnaby
           </button>
         </div>
@@ -253,7 +305,7 @@
 
         <div class="modal-meta-row">
           <span class="modal-category-badge" id="modalCategoryBadge">🚀 Space & Science</span>
-          <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);" id="modalReadTime">3 min read</span>
+          <span style="font-size: 13px; font-weight: 800; color: var(--text-muted);" id="modalReadTime">3 min read</span>
         </div>
 
         <h2 class="modal-title" id="modalTitle">Article Title Goes Here</h2>
@@ -318,7 +370,24 @@
     </div>
   </div>
 
-  <!-- Confetti Canvas for Quiz Success -->
+  <!-- Explorer Badges Trophy Cabinet Modal -->
+  <div class="modal-backdrop" id="badgesModalBackdrop" role="dialog" aria-modal="true">
+    <div class="article-modal" style="max-width: 680px;">
+      <button class="modal-close-btn" id="badgesModalCloseBtn" aria-label="Close badges">✕</button>
+      <div class="modal-body" style="padding-top: 36px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 54px; margin-bottom: 8px;">🏆</div>
+          <h2 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; margin-bottom: 6px;">Your Explorer Trophy Cabinet</h2>
+          <p style="color: var(--text-muted); font-size: 15px;">Read stories, answer quizzes, and discover superpower words to unlock all badges!</p>
+        </div>
+        <div class="badges-grid" id="badgesGridContainer">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas for Quiz & Trophy Success -->
   <canvas id="confettiCanvas"></canvas>
 
   <!-- Scripts -->
